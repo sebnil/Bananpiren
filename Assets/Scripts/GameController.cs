@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour {
 
     public int xMean;
 
+    public int numberOfCratesOnBoat = 0;
+
     // Use this for initialization
     void Start () {
         StartCoroutine(SpawnWaves());
@@ -21,8 +23,26 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        numberOfCratesOnBoat = 0;
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Crate");
+        foreach (GameObject go in gos)
+        {
+            bool crateOnBoat = false;// go.onBoat;
+            if (crateOnBoat)
+            {
+                numberOfCratesOnBoat++;
+            }
+
+        }
+    }
+
+
 
 
     IEnumerator SpawnWaves()
