@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
     public GameObject hazard;
@@ -14,7 +15,9 @@ public class GameController : MonoBehaviour {
 
     public int xMean;
 
+    public Text progressText;
     public int numberOfCratesOnBoat = 0;
+    public int maxNumberOfCratesOnBoat = 0;
 
     // Use this for initialization
     void Start () {
@@ -33,13 +36,21 @@ public class GameController : MonoBehaviour {
         gos = GameObject.FindGameObjectsWithTag("Crate");
         foreach (GameObject go in gos)
         {
-            bool crateOnBoat = false;// go.onBoat;
+            IsCrateOnBoat script = go.GetComponent<IsCrateOnBoat>();
+            bool crateOnBoat = script.onBoat;
             if (crateOnBoat)
             {
                 numberOfCratesOnBoat++;
             }
 
         }
+        if (numberOfCratesOnBoat > maxNumberOfCratesOnBoat)
+        {
+            maxNumberOfCratesOnBoat = numberOfCratesOnBoat;
+        }
+
+        progressText.text = "Crates stacked on boat: " + numberOfCratesOnBoat +
+            "\nMaximum crates stacked: " + maxNumberOfCratesOnBoat;
     }
 
 
