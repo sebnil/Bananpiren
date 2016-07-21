@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
+    public GameObject gamePanel;
+
     public GameObject hazard;
 
     public Vector3 spawnValues;
@@ -26,9 +29,9 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyUp(KeyCode.Escape))
         {
-            Application.Quit();
+            ToggleMenu();
         }
 
         numberOfCratesOnBoat = 0;
@@ -53,8 +56,34 @@ public class GameController : MonoBehaviour {
             "\nMaximum crates stacked: " + maxNumberOfCratesOnBoat;
     }
 
+    public void ToggleMenu()
+    {
 
+        
+        //
+        if (gamePanel.activeSelf)
+        {   
+            gamePanel.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+        else
+        {
+            gamePanel.SetActive(true);
+            Time.timeScale = 0f;
+        }
+    }
 
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        gamePanel.SetActive(false);
+        Time.timeScale = 1.0f;
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 
     IEnumerator SpawnWaves()
     {
