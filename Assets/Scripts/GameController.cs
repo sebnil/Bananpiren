@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
     public GameObject gamePanel;
+    public GameObject touchController;
 
     public GameObject hazard;
 
@@ -24,6 +25,13 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        // only show touch buttons on mobile
+#if UNITY_STANDALONE
+        touchController.SetActive(False);
+#endif
+
+
+        // wave corut
         StartCoroutine(SpawnWaves());
     }
 	
@@ -59,15 +67,15 @@ public class GameController : MonoBehaviour {
     public void ToggleMenu()
     {
 
-        
-        //
         if (gamePanel.activeSelf)
         {   
+            // run game
             gamePanel.SetActive(false);
             Time.timeScale = 1.0f;
         }
         else
         {
+            // pause game and show menu
             gamePanel.SetActive(true);
             Time.timeScale = 0f;
         }
