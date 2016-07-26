@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
     void Start () {
         // only show touch buttons on mobile
 #if UNITY_STANDALONE
-        touchController.SetActive(False);
+        touchController.SetActive(false);
 #endif
 
 
