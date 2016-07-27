@@ -9,6 +9,9 @@ public class Buoyancy : MonoBehaviour {
 	public float maxAngularVelocity = 0.1f;
 	public GameObject BoatObject;
 
+    private GameObject waterPlane;
+    private WaveGenerator waveGenerator;
+
 	//The original Boat
 	private Mesh BoatMesh;
 	//These are always constant and comes from the original hull
@@ -45,10 +48,11 @@ public class Buoyancy : MonoBehaviour {
 		originalVerticesArray = BoatMesh.vertices;
 		originalTrianglesArray = BoatMesh.triangles;
 
+        waterPlane = GameObject.FindWithTag("WaterPlane");
+        waveGenerator = waterPlane.GetComponent<WaveGenerator>();
 
-
-		//Change this to stop the boat from oscillating
-		boatRB.maxAngularVelocity = maxAngularVelocity;
+        //Change this to stop the boat from oscillating
+        boatRB.maxAngularVelocity = maxAngularVelocity;
 	}
 
 
@@ -300,13 +304,18 @@ public class Buoyancy : MonoBehaviour {
 	//Find the distance from vertice to water
 	//Positive if above water
 	//Negative if below water
-	float? DistanceToWater(Vector3 position) {	
+	float DistanceToWater(Vector3 position) {	
 		//Calculate the coordinate of the vertice in global space
 		Vector3 globalVerticePosition = transform.TransformPoint(position);
 
-		float? y_pos = 0f;
+        //float y_pos = 0f;
+        //float waterHeight = waveGenerator.GetWaveYHeight(globalVerticePosition, Time.time);
+        float waterHeight = waveGenerator.GetWaveYHeight(position, Time.time);
 
-		return globalVerticePosition.y - y_pos;
+        float distanceToWater = globalVerticePosition.y - waterHeight;
+        //float distanceToWater = position.y - waterHeight;
+
+        return distanceToWater;
 	}
 
 	//Help class to sort the distances
