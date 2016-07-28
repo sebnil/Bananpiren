@@ -52,6 +52,15 @@ public class Crate : MonoBehaviour {
         {
             Instantiate(splashPrefab, new Vector3(transform.position.x, -1, transform.position.z), Quaternion.identity);
             Instantiate(surfaceSplashPrefab, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+
+            /*var opposite = -rb.velocity;
+            var brakePower = 1000;
+            var brakeForce = opposite.normalized * brakePower;
+            rb.AddForce(brakeForce);*/
+            double ySpeed = rb.velocity.y * 0.1f;
+            rb.velocity = new Vector3(rb.velocity.x, (float)ySpeed, rb.velocity.z);
+            //rb.AddTorque(new Vector3(5f, 5f, -500f));
+            //rb.AddRelativeTorque(new Vector3(0, 0, -5000f));
         }
     }
     void OnTriggerExit(Collider other)
