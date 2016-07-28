@@ -23,6 +23,10 @@ public class GameController : MonoBehaviour {
     public int numberOfCratesOnBoat = 0;
     public int maxNumberOfCratesOnBoat = 0;
 
+    Ray ray;
+    RaycastHit hit;
+    public GameObject cratePrefab;
+
     // Use this for initialization
     void Start () {
         // only show touch buttons on mobile
@@ -42,6 +46,20 @@ public class GameController : MonoBehaviour {
             ToggleMenu();
         }
 
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                GameObject obj = Instantiate(cratePrefab, new Vector3(hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
+
+            }
+
+        }
+
+        // calculate crates on the boat
         numberOfCratesOnBoat = 0;
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Crate");
