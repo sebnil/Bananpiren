@@ -5,11 +5,11 @@ public class CrateDebugTextController : MonoBehaviour {
 
     public GameObject crate;
     public TextMesh text;
-    private IsCrateOnBoat crateScript;
+    private Crate crateScript;
 
     // Use this for initialization
     void Start () {
-        crateScript = crate.GetComponent<IsCrateOnBoat>();
+        crateScript = crate.GetComponent<Crate>();
         text = GetComponent<TextMesh>();
     }
 	

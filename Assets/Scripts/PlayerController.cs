@@ -2,10 +2,12 @@
 using System.Collections;
 using CnControls;
 
+
 public class PlayerController : MonoBehaviour {
 
     public float speed;
     private Rigidbody rb;
+    public ParticleEmitter boatWakeParticles;
 
     // Use this for initialization
     void Start () {
@@ -23,5 +25,14 @@ public class PlayerController : MonoBehaviour {
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
 
         rb.AddForce(movement * speed);
+
+        if (moveHorizontal != 0)
+        {
+            boatWakeParticles.emit = true;
+        }
+        else
+        {
+            boatWakeParticles.emit = false;
+        }
     }
 }

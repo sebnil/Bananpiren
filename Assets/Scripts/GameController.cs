@@ -33,7 +33,8 @@ public class GameController : MonoBehaviour {
 #if UNITY_STANDALONE
         touchController.SetActive(false);
 #endif
-
+        // force landscape on mobile
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
 
         // wave corut
         StartCoroutine(SpawnWaves());
@@ -41,16 +42,16 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        // menu control
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             ToggleMenu();
         }
 
+        // create crate on touch and mouse click
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
         if (Physics.Raycast(ray, out hit))
         {
-
             if (Input.GetMouseButtonDown(0))
             {
                 GameObject obj = Instantiate(cratePrefab, new Vector3(hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
@@ -65,7 +66,7 @@ public class GameController : MonoBehaviour {
         gos = GameObject.FindGameObjectsWithTag("Crate");
         foreach (GameObject go in gos)
         {
-            IsCrateOnBoat script = go.GetComponent<IsCrateOnBoat>();
+            Crate script = go.GetComponent<Crate>();
             bool crateOnBoat = script.onBoat;
             if (crateOnBoat)
             {

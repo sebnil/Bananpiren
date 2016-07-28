@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IsCrateOnBoat : MonoBehaviour {
+public class Crate : MonoBehaviour {
 
     private Rigidbody rb;
     private Transform tr;
@@ -15,6 +15,9 @@ public class IsCrateOnBoat : MonoBehaviour {
 
     public Material crateOnBoatMaterial;
     public Material crateNotOnBoatMaterial;
+
+    public GameObject splashPrefab;
+    public GameObject surfaceSplashPrefab;
 
     // Use this for initialization
     void Start () {
@@ -45,6 +48,11 @@ public class IsCrateOnBoat : MonoBehaviour {
         {
             inCargoZone = true;
         }
+        else if (other.tag == "WaterPlane" && !onBoat && !inCargoZone)
+        {
+            Instantiate(splashPrefab, new Vector3(transform.position.x, -1, transform.position.z), Quaternion.identity);
+            Instantiate(surfaceSplashPrefab, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
+        }
     }
     void OnTriggerExit(Collider other)
     {
@@ -67,7 +75,7 @@ public class IsCrateOnBoat : MonoBehaviour {
             return false;
         }
 
-        if (pos.y < 0)
+        /*if (pos.y < 0)
         {
             // under water
             return false;
@@ -77,9 +85,9 @@ public class IsCrateOnBoat : MonoBehaviour {
         {
             // on dock
             return false;
-        }
+        }*/
 
-        if (relativeVelocityMagnitude > 0.5)
+        if (relativeVelocityMagnitude > 0.8)
         {
             // moving too much compared to boat
             return false;
