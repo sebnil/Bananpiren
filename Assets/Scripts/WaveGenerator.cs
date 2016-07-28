@@ -28,15 +28,19 @@ public class WaveGenerator : MonoBehaviour {
             /*float x = vertices[i].x;
             float y = 0;
             float z = vertices[i].z;*/
+            
             Vector3 position = new Vector3(vertices[i].x, 0, vertices[i].z);
+            Vector3 globalVerticePosition = transform.TransformPoint(position);
+            //Debug.Log("i: " + i + "pos: " + globalVerticePosition.x + " " + globalVerticePosition.z);
+
             float time = Time.time;
 
-            float y = GetWaveYHeight(position, time);
+            float y = GetWaveYHeight(globalVerticePosition, time);
 
             vertices[i].y = y;
         }
         mesh.vertices = vertices;
-        //mesh.RecalculateNormals();
+        mesh.RecalculateNormals();
     }
 
 
@@ -44,7 +48,9 @@ public class WaveGenerator : MonoBehaviour {
     {
         float y = 0;
 
-        float waveType = position.x + position.z * 0.5f;
+        float waveType = position.x;
+        //float waveType = position.x;// + position.z * 0.5f;
+        //float waveType = position.x + position.z;
         y += waveScale * Mathf.Sin((float)(time * waveSpeed + waveType) / waveDistance);
         y += noiseStrength * Mathf.PerlinNoise(position.x + noiseWalk, position.z + Mathf.Sin(time * 0.1f));
 

@@ -309,8 +309,8 @@ public class Buoyancy : MonoBehaviour {
 		Vector3 globalVerticePosition = transform.TransformPoint(position);
 
         //float y_pos = 0f;
-        //float waterHeight = waveGenerator.GetWaveYHeight(globalVerticePosition, Time.time);
-        float waterHeight = waveGenerator.GetWaveYHeight(position, Time.time);
+        float waterHeight = waveGenerator.GetWaveYHeight(globalVerticePosition, Time.time);
+        //float waterHeight = waveGenerator.GetWaveYHeight(position, Time.time);
 
         float distanceToWater = globalVerticePosition.y - waterHeight;
         //float distanceToWater = position.y - waterHeight;
