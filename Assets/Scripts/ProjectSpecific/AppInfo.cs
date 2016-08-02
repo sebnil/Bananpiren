@@ -52,7 +52,7 @@ public static class AppInfo
     /// </summary>
     public static string minorVersion
     {
-        get { return "8"; }
+        get { return "9"; }
     }
 
     /// <summary>
