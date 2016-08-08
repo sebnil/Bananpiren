@@ -20,15 +20,24 @@ public class GameController : MonoBehaviour {
     public int xMean;
 
     public Text progressText;
+	public Text timeLeftText;
     public int numberOfCratesOnBoat = 0;
     public int maxNumberOfCratesOnBoat = 0;
+	public int numberOfCratesDelivered = 0;
+	public int timeLeft;
+	private bool gameOver = false;
 
     Ray ray;
     RaycastHit hit;
     public GameObject cratePrefab;
 
+	public GameObject craneObject;
+	private Crane craneScript;
+
     // Use this for initialization
     void Start () {
+		craneScript = craneObject.GetComponent<Crane>();
+
         // only show touch buttons on mobile
 #if UNITY_STANDALONE
         touchController.SetActive(false);
@@ -36,8 +45,8 @@ public class GameController : MonoBehaviour {
         // force landscape on mobile
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
-        // wave corut
-        //StartCoroutine(SpawnWaves());
+		// start countdown timer
+		StartCoroutine("GameOverTimer");
     }
 	
 	// Update is called once per frame
@@ -58,19 +67,21 @@ public class GameController : MonoBehaviour {
 
 				Debug.Log (hit.transform.gameObject.name);
 
-				if (hit.transform.gameObject.name == "JointHolder") {
-					Debug.Log ("asdasd");
-					Crane craneScript = hit.transform.gameObject.GetComponent<Crane> ();
+				if (hit.transform.gameObject.name == "JointHolder") 
+				{
 					craneScript.LetGoOfCrate ();
-				} else {
+				} 
+				else 
+				{
 					GameObject obj = Instantiate(cratePrefab, new Vector3(hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
 				}
             }
-
-
-
-
         }
+
+		if (Input.GetKeyDown ("space")) 
+		{
+			craneScript.LetGoOfCrate ();
+		}
 
         // calculate crates on the boat
         numberOfCratesOnBoat = 0;
@@ -91,9 +102,18 @@ public class GameController : MonoBehaviour {
             maxNumberOfCratesOnBoat = numberOfCratesOnBoat;
         }
 
-        progressText.text = "Crates stacked on boat: " + numberOfCratesOnBoat +
-            "\nMaximum crates stacked: " + maxNumberOfCratesOnBoat;
+		progressText.text = "Number of crates delivered: " + numberOfCratesDelivered;
+		timeLeftText.text = "Time left: " + timeLeft + "s";
+
+		// if game is over and game is running, pause
+		/*if (gameOver && !gamePanel.activeSelf) {
+			Time.timeScale = 0f;
+		}*/
     }
+
+	public void IncrementNumberOfCratesDelivered() {
+		numberOfCratesDelivered++;
+	}
 
     public void ToggleMenu()
     {
@@ -124,28 +144,15 @@ public class GameController : MonoBehaviour {
         Application.Quit();
     }
 
-    IEnumerator SpawnWaves()
-    {
-        yield return new WaitForSeconds(startWait);
-        while (true)
-        {
-            for (int i = 0; i < hazardCount; i++)
-            {
-                for (int port = 0; port < 2; port++)
-                {
-                    int swapSide = 1;
-                    if (port == 0)
-                    {
-                        swapSide = -1;
-                    }
-                    Vector3 spawnPosition = new Vector3(Random.Range(swapSide*xMean - spawnValues.x, swapSide*xMean + spawnValues.x), spawnValues.y, spawnValues.z);
-                    Quaternion spawnRotation = Quaternion.identity;
-                    Instantiate(hazard, spawnPosition, spawnRotation);
-                }
-
-                yield return new WaitForSeconds(spawnWait);
-            }
-            yield return new WaitForSeconds(waveWait);
-        }
-    }
+	IEnumerator GameOverTimer() {
+		while (true) {
+			yield return new WaitForSeconds (1f);
+			if (timeLeft > 0) {
+				timeLeft--;
+			} else {
+				gameOver = true;
+			}
+		}
+	}
+		
 }

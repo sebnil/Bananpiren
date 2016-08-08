@@ -7,6 +7,8 @@ public class Crate : MonoBehaviour {
     private Transform tr;
     private Renderer renderer;
 
+	private PlayerController playerController;
+	private GameController gameController;
     public Rigidbody boatRigidBody;
 
 	public bool onCrane = false;
@@ -21,6 +23,8 @@ public class Crate : MonoBehaviour {
     public GameObject splashPrefab;
     public GameObject surfaceSplashPrefab;
 
+	public GameObject crateDeliveredTextPrefab;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
@@ -28,6 +32,8 @@ public class Crate : MonoBehaviour {
         renderer = GetComponent<Renderer>();
 
         boatRigidBody = GameObject.FindWithTag("Player").GetComponent<Rigidbody>();
+		playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+		gameController = GameObject.FindWithTag ("GameController").GetComponent<GameController> ();
     }
 	
 	// Update is called once per frame
@@ -37,6 +43,12 @@ public class Crate : MonoBehaviour {
         if (onBoat)
         {
             renderer.material = crateOnBoatMaterial;
+
+			if (playerController.isInUnloadingZone) {
+				gameController.IncrementNumberOfCratesDelivered ();
+				Destroy (this.gameObject);
+				Instantiate(crateDeliveredTextPrefab, transform.position, transform.rotation);
+			}
         }
         else
         {

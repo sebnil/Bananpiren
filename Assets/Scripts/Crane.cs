@@ -4,13 +4,14 @@ using System.Collections;
 public class Crane : MonoBehaviour {
 
 	public Rigidbody crateRb;
+	public Transform crateTr;
 	public GameObject cratePrefab;
 
 	private SpringJoint springJoint;
 	private Rigidbody rb;
 	private Transform tr;
 
-	private bool jointConnected = false;
+	public bool jointConnected = false;
 
 	enum PositionState {Up, MovingDown, Down, MovingUp};
 	PositionState positionState = PositionState.Up;
@@ -27,14 +28,13 @@ public class Crane : MonoBehaviour {
 		springJoint = GetComponent<SpringJoint> ();
 		rb = GetComponent<Rigidbody> ();
 		tr = GetComponent<Transform> ();
-
-
-		//StartCoroutine(SwingCrate());
+		InstantiateNewCrate ();
 	}
 
 	private void InstantiateNewCrate() {
 		GameObject obj = Instantiate(cratePrefab, new Vector3(transform.position.x, transform.position.y - 2, transform.position.z), Quaternion.identity) as GameObject;
 		crateRb = obj.GetComponent<Rigidbody> ();
+		crateTr = obj.GetComponent<Transform> ();
 		positionState = PositionState.MovingDown;
 
 		springJoint.connectedBody = crateRb;
@@ -90,17 +90,5 @@ public class Crane : MonoBehaviour {
 			crateRb.AddForce (new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0, 0));
 			//crateRb.velocity = new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0.1f * Mathf.Cos ((float)Time.time * 0.1f), 0);
 		}
-	}
-
-	IEnumerator SwingCrate()
-	{
-		while (true) {
-			yield return new WaitForSeconds (Random.Range(0.5f, 2f));
-			if (crateRb != null) {
-				//crateRb.AddForce (new Vector3 (500f * Mathf.Sin ((float)Time.time * 1f), Random.Range (0f, 100f), 0));
-				crateRb.velocity = new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0.1f * Mathf.Cos ((float)Time.time * 0.1f), 0);
-			}
-		}
-
 	}
 }

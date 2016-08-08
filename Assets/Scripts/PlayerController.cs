@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     private Rigidbody rb;
     public ParticleEmitter boatWakeParticles;
+	public bool isInUnloadingZone = false;
 
     // Use this for initialization
     void Start () {
@@ -35,4 +36,20 @@ public class PlayerController : MonoBehaviour {
             boatWakeParticles.emit = false;
         }
     }
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "UnloadTriggerBox")
+		{
+			isInUnloadingZone = true;
+		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		if (other.tag == "UnloadTriggerBox")
+		{
+			isInUnloadingZone = false;
+		}
+	}
 }
