@@ -9,6 +9,8 @@ public class Crate : MonoBehaviour {
 
     public Rigidbody boatRigidBody;
 
+	public bool onCrane = false;
+
     public bool onBoat = false;
     public bool inCargoZone = false;
     public float relativeVelocityMagnitude;

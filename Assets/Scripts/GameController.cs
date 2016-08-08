@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
         // wave corut
-        StartCoroutine(SpawnWaves());
+        //StartCoroutine(SpawnWaves());
     }
 	
 	// Update is called once per frame
@@ -54,9 +54,21 @@ public class GameController : MonoBehaviour {
         {
             if (Input.GetMouseButtonDown(0))
             {
-                GameObject obj = Instantiate(cratePrefab, new Vector3(hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
+                
 
+				Debug.Log (hit.transform.gameObject.name);
+
+				if (hit.transform.gameObject.name == "JointHolder") {
+					Debug.Log ("asdasd");
+					Crane craneScript = hit.transform.gameObject.GetComponent<Crane> ();
+					craneScript.LetGoOfCrate ();
+				} else {
+					GameObject obj = Instantiate(cratePrefab, new Vector3(hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
+				}
             }
+
+
+
 
         }
 
