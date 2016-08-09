@@ -8,6 +8,8 @@ public class Crane : MonoBehaviour {
 	public Rigidbody crateRb;
 	public Transform crateTr;
 	public GameObject cratePrefab;
+	private float originalCrateRbMass;
+	public float onCraneCrateRbMass;
 
 	private SpringJoint springJoint;
 	private Rigidbody rb;
@@ -39,6 +41,7 @@ public class Crane : MonoBehaviour {
 	private void InstantiateNewCrate() {
 		GameObject obj = Instantiate(cratePrefab, new Vector3(transform.position.x, transform.position.y - 2, transform.position.z), Quaternion.identity) as GameObject;
 		crateRb = obj.GetComponent<Rigidbody> ();
+		originalCrateRbMass = crateRb.mass;
 		crateTr = obj.GetComponent<Transform> ();
 		positionState = PositionState.MovingDown;
 
@@ -58,6 +61,7 @@ public class Crane : MonoBehaviour {
 
 	public void LetGoOfCrate() {
 		springJoint.connectedBody = null;
+		crateRb.mass = originalCrateRbMass;
 		crateRb = null;
 		jointConnected = false;
 		positionState = PositionState.MovingUp;
@@ -94,6 +98,7 @@ public class Crane : MonoBehaviour {
 		rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
 
 		if (crateRb != null) {
+			crateRb.mass = 0.1f;
 			crateRb.AddForce (new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0, 0));
 			//crateRb.velocity = new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0.1f * Mathf.Cos ((float)Time.time * 0.1f), 0);
 		}

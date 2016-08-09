@@ -129,7 +129,10 @@ public class GameController : MonoBehaviour {
 
     public void ToggleMenu()
     {
-		if (gameOver) {
+		if (gameOver && AppInfo.debugRelease) {
+			// do nothing
+		}
+		else if (gameOver) {
 			// pause game and show menu
 			gameOverPanel.SetActive(true);
 			Time.timeScale = 0f;
