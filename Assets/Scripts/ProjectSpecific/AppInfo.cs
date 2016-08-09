@@ -52,7 +52,7 @@ public static class AppInfo
     /// </summary>
     public static string minorVersion
     {
-        get { return "10"; }
+        get { return "11"; }
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public static class AppInfo
     /// </summary>
     public static string appleBundleId
     {
-        get { return "com.zapdot." + shortName; }
+        get { return "se.treplex." + shortName; }
     }
 
     /// <summary>

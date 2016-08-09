@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour {
 
     public Text progressText;
 	public Text timeLeftText;
+	public Text debugText;
     public int numberOfCratesOnBoat = 0;
     public int maxNumberOfCratesOnBoat = 0;
 	public int numberOfCratesDelivered = 0;
@@ -109,10 +110,9 @@ public class GameController : MonoBehaviour {
 		progressText.text = "Number of crates delivered: " + numberOfCratesDelivered;
 		timeLeftText.text = "Time left: " + Mathf.Floor(timeLeft) + "s";
 
-		// if game is over and game is running, pause
-		/*if (gameOver && !gamePanel.activeSelf) {
-			Time.timeScale = 0f;
-		}*/
+		debugText.text = "crateDeliveredTimeBonus: " + crateDeliveredTimeBonus + 
+		"\ncrateDroppedTimePunishment: " + crateDroppedTimePunishment +
+		"\nver " + AppInfo.fullVersion;
     }
 
 	public void IncrementNumberOfCratesDelivered() {
@@ -172,6 +172,9 @@ public class GameController : MonoBehaviour {
 
 			if (!gameOver && timeLeft > 0) {
 				timeLeft--;
+				if (timeLeft < 0) {
+					timeLeft = 0;
+				}
 			} else if (!gameOver) {
 				gameOver = true;
 				ToggleMenu ();
