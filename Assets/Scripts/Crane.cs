@@ -24,8 +24,6 @@ public class Crane : MonoBehaviour {
 	public float crateSwingXAmplitude;
 	public float crateSwingXTimeParam;
 
-
-	//public AudioClip letGoOfCrate;
 	AudioSource audioSource;
 
 	// Use this for initialization
