@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+[RequireComponent(typeof(AudioSource))]
 public class Crane : MonoBehaviour {
 
 	public Rigidbody crateRb;
@@ -23,11 +25,16 @@ public class Crane : MonoBehaviour {
 	public float crateSwingXTimeParam;
 
 
+	//public AudioClip letGoOfCrate;
+	AudioSource audioSource;
+
 	// Use this for initialization
 	void Start () {
 		springJoint = GetComponent<SpringJoint> ();
 		rb = GetComponent<Rigidbody> ();
 		tr = GetComponent<Transform> ();
+		audioSource = GetComponent<AudioSource>();
+
 		InstantiateNewCrate ();
 	}
 
@@ -56,6 +63,8 @@ public class Crane : MonoBehaviour {
 		crateRb = null;
 		jointConnected = false;
 		positionState = PositionState.MovingUp;
+		//audioSource.PlayOneShot(letGoOfCrate, 0.7F);
+		audioSource.Play();
 	}
 
 	void FixedUpdate() 
