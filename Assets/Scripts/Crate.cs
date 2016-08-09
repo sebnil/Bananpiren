@@ -87,7 +87,7 @@ public class Crate : MonoBehaviour {
 			double ySpeed = rb.velocity.y * 0.1f;
             rb.velocity = new Vector3(rb.velocity.x, (float)ySpeed, rb.velocity.z);
 
-
+			gameController.PunishForDroppedCrate ();
         }
     }
     void OnTriggerExit(Collider other)

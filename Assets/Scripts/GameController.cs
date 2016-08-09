@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
     public GameObject gamePanel;
+	public GameObject gameOverPanel;
     public GameObject touchController;
 
     public GameObject hazard;
@@ -24,7 +25,10 @@ public class GameController : MonoBehaviour {
     public int numberOfCratesOnBoat = 0;
     public int maxNumberOfCratesOnBoat = 0;
 	public int numberOfCratesDelivered = 0;
-	public int timeLeft;
+	public float timeLeft;
+	public float crateDeliveredTimeBonus = 5;
+	public float crateDroppedTimePunishment = 10;
+	public float crateDeliveredTimeBonusDecrementFactor;
 	private bool gameOver = false;
 
     Ray ray;
@@ -103,7 +107,7 @@ public class GameController : MonoBehaviour {
         }
 
 		progressText.text = "Number of crates delivered: " + numberOfCratesDelivered;
-		timeLeftText.text = "Time left: " + timeLeft + "s";
+		timeLeftText.text = "Time left: " + Mathf.Floor(timeLeft) + "s";
 
 		// if game is over and game is running, pause
 		/*if (gameOver && !gamePanel.activeSelf) {
@@ -113,12 +117,24 @@ public class GameController : MonoBehaviour {
 
 	public void IncrementNumberOfCratesDelivered() {
 		numberOfCratesDelivered++;
+		timeLeft += crateDeliveredTimeBonus;
+	}
+
+	public void PunishForDroppedCrate() {
+		timeLeft -= crateDroppedTimePunishment;
+		if (timeLeft < 0) {
+			timeLeft = 0;
+		}
 	}
 
     public void ToggleMenu()
     {
-
-        if (gamePanel.activeSelf)
+		if (gameOver) {
+			// pause game and show menu
+			gameOverPanel.SetActive(true);
+			Time.timeScale = 0f;
+		}
+        else if (gamePanel.activeSelf)
         {   
             // run game
             gamePanel.SetActive(false);
@@ -147,10 +163,20 @@ public class GameController : MonoBehaviour {
 	IEnumerator GameOverTimer() {
 		while (true) {
 			yield return new WaitForSeconds (1f);
-			if (timeLeft > 0) {
-				timeLeft--;
+
+			if (crateDeliveredTimeBonus > 2) {
+				crateDeliveredTimeBonus = crateDeliveredTimeBonus - Time.timeSinceLevelLoad * crateDeliveredTimeBonusDecrementFactor;
 			} else {
+				crateDeliveredTimeBonus = 2;
+			}
+
+			if (!gameOver && timeLeft > 0) {
+				timeLeft--;
+			} else if (!gameOver) {
 				gameOver = true;
+				ToggleMenu ();
+			} else {
+				// do nothign
 			}
 		}
 	}
