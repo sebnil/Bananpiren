@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour {
 				{
 					craneScript.LetGoOfCrate ();
 				} 
-				else 
+				else if (AppInfo.debugRelease)
 				{
 					GameObject obj = Instantiate(cratePrefab, new Vector3(hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
 				}
