@@ -10,7 +10,7 @@ using System.IO;
 
 public static class AppInfo
 {
-	public static bool debugRelease = true;
+	public static bool debugRelease = false;
 
     static AppInfo()
     {
@@ -54,7 +54,7 @@ public static class AppInfo
     /// </summary>
     public static string minorVersion
     {
-        get { return "12"; }
+        get { return "13"; }
     }
 
     /// <summary>

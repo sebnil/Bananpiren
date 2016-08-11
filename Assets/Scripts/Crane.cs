@@ -11,7 +11,7 @@ public class Crane : MonoBehaviour {
 	private float originalCrateRbMass;
 	public float onCraneCrateRbMass;
 
-	private SpringJoint springJoint;
+	private HingeJoint hingejoint;
 	private Rigidbody rb;
 	private Transform tr;
 
@@ -30,7 +30,7 @@ public class Crane : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		springJoint = GetComponent<SpringJoint> ();
+		hingejoint = GetComponent<HingeJoint> ();
 		rb = GetComponent<Rigidbody> ();
 		tr = GetComponent<Transform> ();
 		audioSource = GetComponent<AudioSource>();
@@ -45,22 +45,17 @@ public class Crane : MonoBehaviour {
 		crateTr = obj.GetComponent<Transform> ();
 		positionState = PositionState.MovingDown;
 
-		springJoint.connectedBody = crateRb;
+		hingejoint.connectedBody = crateRb;
 		jointConnected = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		/*if (!jointConnected && crateRb != null) 
-		{
-			springJoint.connectedBody = crateRb;
-			jointConnected = true;
-		}*/
-			
+
 	}
 
 	public void LetGoOfCrate() {
-		springJoint.connectedBody = null;
+		hingejoint.connectedBody = null;
 		crateRb.mass = originalCrateRbMass;
 		crateRb = null;
 		jointConnected = false;
@@ -98,7 +93,7 @@ public class Crane : MonoBehaviour {
 		rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
 
 		if (crateRb != null) {
-			crateRb.mass = 0.1f;
+			crateRb.mass = onCraneCrateRbMass;
 			crateRb.AddForce (new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0, 0));
 			//crateRb.velocity = new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0.1f * Mathf.Cos ((float)Time.time * 0.1f), 0);
 		}
