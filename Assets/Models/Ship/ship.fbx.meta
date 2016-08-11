@@ -11,21 +11,144 @@ ModelImporter:
     100006: ship_body
     100008: ship_bridge
     100010: ship_funnel
+    100012: group1
+    100014: group2
+    100016: group3
+    100018: group4
+    100020: pCube1
+    100022: pCube2
+    100024: pCube3
+    100026: pCube4
+    100028: pCube4 1
+    100030: pCube5
+    100032: pCube5 1
+    100034: pCube6
+    100036: pCube6 1
+    100038: pCube7
+    100040: pCube7 1
+    100042: pCube8
+    100044: pCube9
+    100046: pTorus3
+    100048: pTorus3 1
+    100050: pTorus4
+    100052: pTorus4 1
+    100054: pTorus5
+    100056: pTorus5 1
+    100058: pTorus6
+    100060: pTorus6 1
+    100062: ship_body1
+    100064: ship_body2
     400000: group
     400002: Ship
     400004: //RootNode
     400006: ship_body
     400008: ship_bridge
     400010: ship_funnel
+    400012: group1
+    400014: group2
+    400016: group3
+    400018: group4
+    400020: pCube1
+    400022: pCube2
+    400024: pCube3
+    400026: pCube4
+    400028: pCube4 1
+    400030: pCube5
+    400032: pCube5 1
+    400034: pCube6
+    400036: pCube6 1
+    400038: pCube7
+    400040: pCube7 1
+    400042: pCube8
+    400044: pCube9
+    400046: pTorus3
+    400048: pTorus3 1
+    400050: pTorus4
+    400052: pTorus4 1
+    400054: pTorus5
+    400056: pTorus5 1
+    400058: pTorus6
+    400060: pTorus6 1
+    400062: ship_body1
+    400064: ship_body2
     2300000: ship_body
     2300002: ship_bridge
     2300004: ship_funnel
+    2300006: pCube1
+    2300008: pCube2
+    2300010: pCube3
+    2300012: pCube4
+    2300014: pCube4 1
+    2300016: pCube5
+    2300018: pCube5 1
+    2300020: pCube6
+    2300022: pCube6 1
+    2300024: pCube7
+    2300026: pCube7 1
+    2300028: pCube8
+    2300030: pCube9
+    2300032: pTorus3
+    2300034: pTorus3 1
+    2300036: pTorus4
+    2300038: pTorus4 1
+    2300040: pTorus5
+    2300042: pTorus5 1
+    2300044: pTorus6
+    2300046: pTorus6 1
+    2300048: ship_body1
+    2300050: ship_body2
     3300000: ship_body
     3300002: ship_bridge
     3300004: ship_funnel
+    3300006: pCube1
+    3300008: pCube2
+    3300010: pCube3
+    3300012: pCube4
+    3300014: pCube4 1
+    3300016: pCube5
+    3300018: pCube5 1
+    3300020: pCube6
+    3300022: pCube6 1
+    3300024: pCube7
+    3300026: pCube7 1
+    3300028: pCube8
+    3300030: pCube9
+    3300032: pTorus3
+    3300034: pTorus3 1
+    3300036: pTorus4
+    3300038: pTorus4 1
+    3300040: pTorus5
+    3300042: pTorus5 1
+    3300044: pTorus6
+    3300046: pTorus6 1
+    3300048: ship_body1
+    3300050: ship_body2
     4300000: ship_body
     4300002: ship_bridge
     4300004: ship_funnel
+    4300006: ship_body1
+    4300008: ship_body2
+    4300010: pCube1
+    4300012: pCube2
+    4300014: pCube3
+    4300016: pCube7
+    4300018: pCube6
+    4300020: pCube5
+    4300022: pCube4
+    4300024: pCube8
+    4300026: pCube7
+    4300028: pCube6
+    4300030: pCube5
+    4300032: pCube4
+    4300034: pCube9
+    4300036: pTorus4
+    4300038: pTorus3
+    4300040: pTorus5
+    4300042: pTorus6
+    4300044: pTorus4
+    4300046: pTorus3
+    4300048: pTorus5
+    4300050: pTorus6
   materials:
     importMaterials: 1
     materialName: 0
@@ -33,7 +156,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
