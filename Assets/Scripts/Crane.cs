@@ -9,22 +9,28 @@ public class Crane : MonoBehaviour {
 	public Transform crateTr;
 	public GameObject cratePrefab;
 	private float originalCrateRbMass;
-	public float onCraneCrateRbMass;
+    private float originalCrateRbDrag;
+    private float originalCrateRbAngularDrag;
+    public float onCraneCrateRbMass;
 
 	private HingeJoint hingejoint;
 	private Rigidbody rb;
 	private Transform tr;
+    private float currentDirection = 1;
+    public float swingTurnAngle;
+    public float swingAbsTargetVelocity;
+    public float swingForce;
+    public float swingXVelocityFactorOnRelease;
 
-	public bool jointConnected = false;
+
+    public bool jointConnected = false;
 
 	enum PositionState {Up, MovingDown, Down, MovingUp};
 	PositionState positionState = PositionState.Up;
 	private Vector3 kinematicVelocity = new Vector3();
-	public float craneMinLift;
-	public float craneMaxLift;
-	public float craneAbsoluteSpeed;
-	public float crateSwingXAmplitude;
-	public float crateSwingXTimeParam;
+	public float craneMinYLift;
+	public float craneMaxYLift;
+	public float craneLiftAbsSpeed;
 
 	AudioSource audioSource;
 
@@ -39,10 +45,12 @@ public class Crane : MonoBehaviour {
 	}
 
 	private void InstantiateNewCrate() {
-		GameObject obj = Instantiate(cratePrefab, new Vector3(transform.position.x, transform.position.y - 2, transform.position.z), Quaternion.identity) as GameObject;
+		GameObject obj = Instantiate(cratePrefab, new Vector3(transform.position.x, transform.position.y - 8, transform.position.z), Quaternion.identity) as GameObject;
 		crateRb = obj.GetComponent<Rigidbody> ();
 		originalCrateRbMass = crateRb.mass;
-		crateTr = obj.GetComponent<Transform> ();
+        originalCrateRbDrag = crateRb.drag;
+        originalCrateRbAngularDrag = crateRb.angularDrag;
+        crateTr = obj.GetComponent<Transform> ();
 		positionState = PositionState.MovingDown;
 
 		hingejoint.connectedBody = crateRb;
@@ -57,18 +65,22 @@ public class Crane : MonoBehaviour {
 	public void LetGoOfCrate() {
 		hingejoint.connectedBody = null;
 		crateRb.mass = originalCrateRbMass;
-		crateRb = null;
+        crateRb.drag = originalCrateRbDrag;
+        crateRb.angularDrag = originalCrateRbAngularDrag;
+        float speedX = crateRb.velocity.x * swingXVelocityFactorOnRelease;
+        crateRb.velocity = new Vector3(speedX, crateRb.velocity.y, crateRb.velocity.z);
+        //crateRb.isKinematic = false;
+        crateRb = null;
 		jointConnected = false;
 		positionState = PositionState.MovingUp;
-		//audioSource.PlayOneShot(letGoOfCrate, 0.7F);
 		audioSource.Play();
 	}
 
 	void FixedUpdate() 
 	{
-		if (positionState != PositionState.MovingUp && tr.position.y <= craneMinLift) {
+		if (positionState != PositionState.MovingUp && tr.position.y <= craneMinYLift) {
 			positionState = PositionState.Down;
-		} else if (positionState != PositionState.MovingDown && tr.position.y >= craneMaxLift) {
+		} else if (positionState != PositionState.MovingDown && tr.position.y >= craneMaxYLift) {
 			positionState = PositionState.Up;
 		}
 
@@ -78,10 +90,10 @@ public class Crane : MonoBehaviour {
 				kinematicVelocity = Vector3.zero;
 				break;
 			case PositionState.MovingDown:
-				kinematicVelocity = -transform.up * craneAbsoluteSpeed;
+				kinematicVelocity = -transform.up * craneLiftAbsSpeed;
 				break;
 			case PositionState.MovingUp:
-				kinematicVelocity = transform.up * craneAbsoluteSpeed;
+				kinematicVelocity = transform.up * craneLiftAbsSpeed;
 				break;
 		}
 
@@ -94,8 +106,26 @@ public class Crane : MonoBehaviour {
 
 		if (crateRb != null) {
 			crateRb.mass = onCraneCrateRbMass;
-			crateRb.AddForce (new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0, 0));
-			//crateRb.velocity = new Vector3 (crateSwingXAmplitude * Mathf.Sin ((float)Time.time * crateSwingXTimeParam), 0.1f * Mathf.Cos ((float)Time.time * 0.1f), 0);
-		}
+            crateRb.drag = 0;
+            crateRb.angularDrag = 0;
+
+            if (currentDirection == 1 && hingejoint.angle > swingTurnAngle)
+            {
+                currentDirection = -1;
+            }
+            else if (currentDirection == -1 && hingejoint.angle < -swingTurnAngle)
+            {
+                currentDirection = 1;
+            }
+
+            JointMotor motor = hingejoint.motor;
+            motor.force = swingForce;
+            motor.targetVelocity = currentDirection * swingAbsTargetVelocity;
+            motor.freeSpin = false;
+            hingejoint.motor = motor;
+            hingejoint.useMotor = true;
+
+            //Debug.Log(hingejoint.angle);
+        }
 	}
 }

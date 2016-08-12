@@ -72,12 +72,8 @@ public class GameController : MonoBehaviour {
 
 				Debug.Log (hit.transform.gameObject.name);
 
-				if (hit.transform.gameObject.name == "JointHolder") {
-					craneScript.LetGoOfCrate ();
-				} else if (AppInfo.debugRelease) {
-					GameObject obj = Instantiate (cratePrefab, new Vector3 (hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
-				} else {
-					craneScript.LetGoOfCrate ();
+				if (AppInfo.debugRelease && hit.transform.gameObject.name == "DebugCrateRaycastTarget") {
+                    GameObject obj = Instantiate (cratePrefab, new Vector3 (hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
 				}
             }
         }
