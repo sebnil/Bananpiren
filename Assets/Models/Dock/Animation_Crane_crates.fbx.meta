@@ -146,6 +146,50 @@ ModelImporter:
     100276: transform9
     100278: Wire
     100280: Wire_N_claw
+    100282: back
+    100284: bottom
+    100286: cargohold_2
+    100288: cargohold_4
+    100290: group5
+    100292: group6
+    100294: pCube39 1
+    100296: pCube65
+    100298: pCube67
+    100300: pCube68
+    100302: pCube70
+    100304: pCube72
+    100306: pCube73
+    100308: pCube74
+    100310: pCylinder13
+    100312: pCylinder14
+    100314: pCylinder15
+    100316: pCylinder15 1
+    100318: pCylinder16
+    100320: pCylinder16 1
+    100322: pCylinder17
+    100324: pCylinder17 1
+    100326: pCylinder18
+    100328: pCylinder18 1
+    100330: pCylinder19
+    100332: polySurface39 1
+    100334: polySurface41 1
+    100336: polySurface42 1
+    100338: polySurface44 1
+    100340: polySurface45 1
+    100342: polySurface46 1
+    100344: polySurface47 1
+    100346: polySurface50 1
+    100348: polySurface51 1
+    100350: polySurface52 1
+    100352: polySurface53 1
+    100354: polySurface54 1
+    100356: polySurface55 1
+    100358: polySurface56 1
+    100360: polySurface57 1
+    100362: railing
+    100364: railing1
+    100366: Railing_platform
+    100368: Railing_platform1
     400000: //RootNode
     400002: areaLight1
     400004: areaLight2
@@ -287,6 +331,50 @@ ModelImporter:
     400276: transform9
     400278: Wire
     400280: Wire_N_claw
+    400282: back
+    400284: bottom
+    400286: cargohold_2
+    400288: cargohold_4
+    400290: group5
+    400292: group6
+    400294: pCube39 1
+    400296: pCube65
+    400298: pCube67
+    400300: pCube68
+    400302: pCube70
+    400304: pCube72
+    400306: pCube73
+    400308: pCube74
+    400310: pCylinder13
+    400312: pCylinder14
+    400314: pCylinder15
+    400316: pCylinder15 1
+    400318: pCylinder16
+    400320: pCylinder16 1
+    400322: pCylinder17
+    400324: pCylinder17 1
+    400326: pCylinder18
+    400328: pCylinder18 1
+    400330: pCylinder19
+    400332: polySurface39 1
+    400334: polySurface41 1
+    400336: polySurface42 1
+    400338: polySurface44 1
+    400340: polySurface45 1
+    400342: polySurface46 1
+    400344: polySurface47 1
+    400346: polySurface50 1
+    400348: polySurface51 1
+    400350: polySurface52 1
+    400352: polySurface53 1
+    400354: polySurface54 1
+    400356: polySurface55 1
+    400358: polySurface56 1
+    400360: polySurface57 1
+    400362: railing
+    400364: railing1
+    400366: Railing_platform
+    400368: Railing_platform1
     2300000: Claw 1
     2300002: pCube10
     2300004: pCube11
@@ -390,6 +478,44 @@ ModelImporter:
     2300200: polySurface9
     2300202: pPipe1
     2300204: pPlane1
+    2300206: pCube39 1
+    2300208: pCube65
+    2300210: pCube67
+    2300212: pCube68
+    2300214: pCube70
+    2300216: pCube72
+    2300218: pCube73
+    2300220: pCube74
+    2300222: pCylinder13
+    2300224: pCylinder14
+    2300226: pCylinder15
+    2300228: pCylinder15 1
+    2300230: pCylinder16
+    2300232: pCylinder16 1
+    2300234: pCylinder17
+    2300236: pCylinder17 1
+    2300238: pCylinder18
+    2300240: pCylinder18 1
+    2300242: pCylinder19
+    2300244: polySurface39 1
+    2300246: polySurface41 1
+    2300248: polySurface42 1
+    2300250: polySurface44 1
+    2300252: polySurface45 1
+    2300254: polySurface46 1
+    2300256: polySurface47 1
+    2300258: polySurface50 1
+    2300260: polySurface51 1
+    2300262: polySurface52 1
+    2300264: polySurface53 1
+    2300266: polySurface54 1
+    2300268: polySurface55 1
+    2300270: polySurface56 1
+    2300272: polySurface57 1
+    2300274: railing
+    2300276: railing1
+    2300278: Railing_platform
+    2300280: Railing_platform1
     3300000: Claw 1
     3300002: pCube10
     3300004: pCube11
@@ -493,6 +619,44 @@ ModelImporter:
     3300200: polySurface9
     3300202: pPipe1
     3300204: pPlane1
+    3300206: pCube39 1
+    3300208: pCube65
+    3300210: pCube67
+    3300212: pCube68
+    3300214: pCube70
+    3300216: pCube72
+    3300218: pCube73
+    3300220: pCube74
+    3300222: pCylinder13
+    3300224: pCylinder14
+    3300226: pCylinder15
+    3300228: pCylinder15 1
+    3300230: pCylinder16
+    3300232: pCylinder16 1
+    3300234: pCylinder17
+    3300236: pCylinder17 1
+    3300238: pCylinder18
+    3300240: pCylinder18 1
+    3300242: pCylinder19
+    3300244: polySurface39 1
+    3300246: polySurface41 1
+    3300248: polySurface42 1
+    3300250: polySurface44 1
+    3300252: polySurface45 1
+    3300254: polySurface46 1
+    3300256: polySurface47 1
+    3300258: polySurface50 1
+    3300260: polySurface51 1
+    3300262: polySurface52 1
+    3300264: polySurface53 1
+    3300266: polySurface54 1
+    3300268: polySurface55 1
+    3300270: polySurface56 1
+    3300272: polySurface57 1
+    3300274: railing
+    3300276: railing1
+    3300278: Railing_platform
+    3300280: Railing_platform1
     4300000: polySurface3
     4300002: pCube2
     4300004: pCube3
@@ -596,6 +760,44 @@ ModelImporter:
     4300200: polySurface57
     4300202: polySurface58
     4300204: pPlane1
+    4300206: pCylinder13
+    4300208: pCylinder14
+    4300210: pCylinder17
+    4300212: pCylinder18
+    4300214: pCylinder15
+    4300216: pCylinder16
+    4300218: pCube70
+    4300220: pCube72
+    4300222: pCube73
+    4300224: pCube74
+    4300226: pCylinder19
+    4300228: pCylinder17
+    4300230: pCylinder18
+    4300232: pCylinder15
+    4300234: pCylinder16
+    4300236: Railing_platform
+    4300238: Railing_platform1
+    4300240: railing
+    4300242: railing1
+    4300244: pCube65
+    4300246: pCube67
+    4300248: pCube68
+    4300250: polySurface54
+    4300252: polySurface53
+    4300254: polySurface57
+    4300256: polySurface56
+    4300258: polySurface55
+    4300260: polySurface52
+    4300262: polySurface51
+    4300264: polySurface50
+    4300266: polySurface44
+    4300268: polySurface42
+    4300270: polySurface47
+    4300272: polySurface46
+    4300274: polySurface45
+    4300276: polySurface39
+    4300278: polySurface41
+    4300280: pCube39
     7400000: Take 001
     9500000: //RootNode
     11100000: //RootNode
