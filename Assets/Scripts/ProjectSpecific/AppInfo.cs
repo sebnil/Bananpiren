@@ -22,7 +22,7 @@ public static class AppInfo
     /// </summary>
     public static string companyName
     {
-        get { return "Treplex"; }
+        get { return "Crocoraff"; }
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ public static class AppInfo
     /// </summary>
     public static string longName
     {
-        get { return "Shipper"; }
+        get { return "Bananpiren"; }
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public static class AppInfo
     /// </summary>
     public static string shortName
     {
-        get { return "shipper"; }
+        get { return "bananpiren"; }
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public static class AppInfo
     /// </summary>
     public static string minorVersion
     {
-        get { return "20"; }
+        get { return "21"; }
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ public static class AppInfo
     /// </summary>
     public static string appleBundleId
     {
-        get { return "se.treplex." + shortName; }
+        get { return "com.crocoraff." + shortName; }
     }
 
     /// <summary>
