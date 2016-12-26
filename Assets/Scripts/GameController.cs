@@ -3,7 +3,10 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour {
+public class GameController : Singleton<GameController> {
+
+	protected GameController () {} // guarantee this will be always a singleton only - can't use the constructor!
+
     public GameObject gamePanel;
 	public GameObject gameOverPanel;
     public GameObject touchController;
@@ -31,6 +34,22 @@ public class GameController : MonoBehaviour {
 	public float crateDroppedTimePunishment = 10;
 	public float crateDeliveredTimeBonusDecrementFactor;
 	private bool gameOver = false;
+
+	[System.Serializable]
+	public class CrateTimers
+	{
+		public int timerStart;
+		public int yellowThreshold;
+		public int brownThreshold;
+		public int rottenThreshold;
+
+		public float timeBonusGreen;
+		public float timeBonusYellow;
+		public float timeBonusBrown;
+		public float timeBonusRotten;
+	}
+	public CrateTimers crateTimers;
+
 
     Ray ray;
     RaycastHit hit;
@@ -110,9 +129,23 @@ public class GameController : MonoBehaviour {
 		"\nver " + AppInfo.fullVersion;
     }
 
-	public void IncrementNumberOfCratesDelivered() {
+	public void IncrementNumberOfCratesDelivered(Crate.CrateState crateState) {
 		numberOfCratesDelivered++;
-		timeLeft += crateDeliveredTimeBonus;
+		switch (crateState) {
+		case Crate.CrateState.Green:
+			timeLeft += crateTimers.timeBonusGreen;
+			break;
+		case Crate.CrateState.Yellow:
+			timeLeft += crateTimers.timeBonusYellow;
+			break;
+		case Crate.CrateState.Brown:
+			timeLeft += crateTimers.timeBonusBrown;
+			break;
+		case Crate.CrateState.Rotten:
+			timeLeft += crateTimers.timeBonusRotten;
+			break;
+		}
+
 	}
 
 	public void PunishForDroppedCrate() {

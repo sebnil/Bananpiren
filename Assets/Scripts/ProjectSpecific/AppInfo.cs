@@ -54,7 +54,7 @@ public static class AppInfo
     /// </summary>
     public static string minorVersion
     {
-        get { return "21"; }
+        get { return "22"; }
     }
 
     /// <summary>
