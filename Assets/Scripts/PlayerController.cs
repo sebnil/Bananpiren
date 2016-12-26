@@ -2,13 +2,14 @@
 using System.Collections;
 using CnControls;
 
-
 public class PlayerController : MonoBehaviour {
 
     public float speed;
     private Rigidbody rb;
     public ParticleEmitter boatWakeParticles;
 	public bool isInUnloadingZone = false;
+
+
 
     // Use this for initialization
     void Start () {
@@ -17,12 +18,21 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-#if UNITY_STANDALONE
-        float moveHorizontal = Input.GetAxis("Horizontal");
-#else
-        float moveHorizontal = CnInputManager.GetAxis("Horizontal");
-#endif
+		float moveHorizontal;
+		switch (GUIHandler.Instance.controlInput) {
 
+		case ControlInput.HUD:
+			moveHorizontal = CnInputManager.GetAxis("Horizontal");
+			break;
+		case ControlInput.Accelerometer:
+			moveHorizontal = Input.acceleration.x;
+			break;
+		case ControlInput.Keyboard:
+		default:
+			moveHorizontal = Input.GetAxis ("Horizontal");
+			break;
+		}
+			
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
 
         rb.AddForce(movement * speed);

@@ -9,7 +9,6 @@ public class GameController : Singleton<GameController> {
 
     public GameObject gamePanel;
 	public GameObject gameOverPanel;
-    public GameObject touchController;
 
     public GameObject hazard;
 
@@ -62,10 +61,6 @@ public class GameController : Singleton<GameController> {
     void Start () {
 		craneScript = craneObject.GetComponent<Crane>();
 
-        // only show touch buttons on mobile
-#if UNITY_STANDALONE
-        touchController.SetActive(false);
-#endif
         // force landscape on mobile
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
@@ -87,8 +82,6 @@ public class GameController : Singleton<GameController> {
         {
             if (Input.GetMouseButtonDown(0))
             {
-                
-
 				Debug.Log (hit.transform.gameObject.name);
 
 				if (AppInfo.debugRelease && hit.transform.gameObject.name == "DebugCrateRaycastTarget") {
