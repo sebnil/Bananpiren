@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using com.kleberswf.lib.core;
 
 public class GameController : Singleton<GameController> {
 

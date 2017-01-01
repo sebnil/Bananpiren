@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using com.kleberswf.lib.core;
 
 public enum ControlInput {Keyboard, HUD, Accelerometer};
 

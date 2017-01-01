@@ -1,16 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-
-public class Manager : Singleton<Manager>
-{
-	protected Manager ()
-	{
-	}
-	// guarantee this will be always a singleton only - can't use the constructor!
-
-	public string myGlobalVar = "whatever";
-}
 
 public class Crate : MonoBehaviour
 {
