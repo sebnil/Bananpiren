@@ -6,8 +6,7 @@ using System;
 public class Buoyancy : MonoBehaviour {
 	//The game object where we will display the mesh that is below the water
 	public GameObject UnderwaterMeshOBJ;
-	public float maxAngularVelocity = 0.1f;
-	public GameObject BoatObject;
+	public float maxAngularVelocity;
 
     private GameObject waterPlane;
     private WaveGenerator waveGenerator;
@@ -26,23 +25,26 @@ public class Buoyancy : MonoBehaviour {
 	private List<Vector3> underwaterVertices;
 	private List<int> underwaterTriangles;
 
-	public float rho_water = 1000f;
-
+	public float rho_water;
+	public float rho_water_nominal;
+	public float rho_water_big_angle;
+	public float sinking_angle;
 
 	public Rigidbody boatRB;
+	public Transform boatTr;
 
 
 
 	void Start() {
 		UnderWaterMesh = UnderwaterMeshOBJ.GetComponent<MeshFilter>().mesh;
-		if (BoatObject != null) {
-			BoatMesh = BoatObject.GetComponent<MeshFilter> ().mesh;
-		} else {
-			BoatMesh = GetComponent<MeshFilter> ().mesh;
-		}
+		BoatMesh = GetComponent<MeshFilter> ().mesh;
 
 		if (boatRB == null) {
 			boatRB = GetComponent<Rigidbody> ();
+		}
+
+		if (boatTr == null) {
+			boatTr = GetComponent<Transform> ();
 		}
 
 		originalVerticesArray = BoatMesh.vertices;
@@ -51,13 +53,28 @@ public class Buoyancy : MonoBehaviour {
         waterPlane = GameObject.FindWithTag("WaterPlane");
         waveGenerator = waterPlane.GetComponent<WaveGenerator>();
 
-        //Change this to stop the boat from oscillating
-        boatRB.maxAngularVelocity = maxAngularVelocity;
+		//Change this to stop the boat from oscillating
+		boatRB.maxAngularVelocity = maxAngularVelocity;
+
+		updateRho ();
+	}
+
+	void updateRho() {
+		if (boatTr == null) {
+			rho_water = rho_water_nominal;
+		}
+			
+		if (Mathf.Abs(boatTr.localEulerAngles.z - 90) > sinking_angle) {
+			rho_water = rho_water_big_angle;
+		}
+		else {
+			rho_water = rho_water_nominal;
+		}
 	}
 
 
-
 	void Update() {
+		updateRho ();
 		GenerateUnderwaterMesh();
 	}
 

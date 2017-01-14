@@ -10,7 +10,7 @@ using System.IO;
 
 public static class AppInfo
 {
-	public static bool debugRelease = false;
+	public static bool debugRelease = true;
 
     static AppInfo()
     {

@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
     public ParticleEmitter boatWakeParticles;
 	public bool isInUnloadingZone = false;
 
+	public float maxTranslationalVelocity;
+
 
 
     // Use this for initialization
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 			moveHorizontal = CnInputManager.GetAxis("Horizontal");
 			break;
 		case ControlInput.Accelerometer:
-			moveHorizontal = Input.acceleration.x;
+			moveHorizontal = Mathf.Clamp(Input.acceleration.x * 5f, -1f, 1f);
 			break;
 		case ControlInput.Keyboard:
 		default:
@@ -46,6 +48,11 @@ public class PlayerController : MonoBehaviour {
             boatWakeParticles.emit = false;
         }
     }
+
+	void FixedUpdate() {
+		// clamp velocity
+		rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxTranslationalVelocity);
+	}
 
 	void OnTriggerEnter(Collider other)
 	{
