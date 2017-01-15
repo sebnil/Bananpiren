@@ -154,16 +154,16 @@ public class GameController : Singleton<GameController> {
 
     public void ToggleMenu()
     {
-		if (gameOver && AppInfo.debugRelease) {
+		if (gameState == GameState.GameOver && AppInfo.debugRelease) {
 			// do nothing
 		}
-		else if (gameOver) {
+		else if (gameState == GameState.GameOver) {
 			// pause game and show menu
 			gameOverPanel.SetActive(true);
-			gameState = GameState.Paused;
+			//gameState = GameState.Paused;
 			Time.timeScale = 0f;
 		}
-        else if (gamePanel.activeSelf)
+		else if (gameState == GameState.Paused)
         {   
             // run game
             gamePanel.SetActive(false);
@@ -208,9 +208,10 @@ public class GameController : Singleton<GameController> {
 				}
 			} else if (!gameOver) {
 				gameOver = true;
+				gameState = GameState.GameOver;
 				ToggleMenu ();
 			} else {
-				// do nothign
+				// do nothing
 			}
 		}
 	}
