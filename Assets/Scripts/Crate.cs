@@ -53,8 +53,11 @@ Green,
 	public float crateHitBoatSoundVelocityThreshold;
 	public float[] crateSplashSoundVelocityThreshold;
 
-	// Use this for initialization
-	void Start ()
+    public GameObject bananaSwitchesStateParticleSystem;
+    private Color brownColor = new Color(170/255f, 104/255f, 49/255f, 1);
+
+    // Use this for initialization
+    void Start ()
 	{
 		rb = GetComponent<Rigidbody> ();
 		tr = GetComponent<Transform> ();
@@ -167,6 +170,7 @@ Green,
 	void decreaseTimeRemaining ()
 	{
 		timeRemaining--;
+        CrateState currentState = crateState;
 		if (timeRemaining < GameController.Instance.crateTimers.rottenThreshold) {
 			renderer.material = crateMaterials.crateRottenBananas;
 			crateState = CrateState.Rotten;
@@ -176,11 +180,33 @@ Green,
 		} else if (timeRemaining < GameController.Instance.crateTimers.yellowThreshold) {
 			renderer.material = crateMaterials.crateYellowBananas;
 			crateState = CrateState.Yellow;
-		} else {
+        } else {
 			// default
 			renderer.material = crateMaterials.crateGreenBananas;
 			crateState = CrateState.Green;
 		}
+
+        // if crate state changed
+        if (currentState != crateState)
+        {
+            GameObject obj = Instantiate(bananaSwitchesStateParticleSystem, transform.position, Quaternion.identity) as GameObject;
+            ParticleSystem ps = obj.GetComponent<ParticleSystem>();
+            switch (crateState)
+            {
+                case CrateState.Rotten:
+                    ps.startColor = Color.black;
+                    break;
+                case CrateState.Brown:
+                    ps.startColor = brownColor;
+                    break;
+                case CrateState.Yellow:
+                    ps.startColor = Color.yellow;
+                    break;
+                default:
+                    // should not happen
+                    break;
+            }
+        }
 	}
 
 	void showDroppedCrateText(Vector3 pos, Quaternion rot) {
