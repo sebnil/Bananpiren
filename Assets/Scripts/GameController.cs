@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using com.kleberswf.lib.core;
 
+public enum GameState {Running, Paused, GameOver};
+
 public class GameController : Singleton<GameController> {
 
 	protected GameController () {} // guarantee this will be always a singleton only - can't use the constructor!
@@ -34,6 +36,7 @@ public class GameController : Singleton<GameController> {
 	public float crateDroppedTimePunishment = 10;
 	public float crateDeliveredTimeBonusDecrementFactor;
 	private bool gameOver = false;
+	public GameState gameState = GameState.Running;
 
 	[System.Serializable]
 	public class CrateTimers
@@ -157,18 +160,21 @@ public class GameController : Singleton<GameController> {
 		else if (gameOver) {
 			// pause game and show menu
 			gameOverPanel.SetActive(true);
+			gameState = GameState.Paused;
 			Time.timeScale = 0f;
 		}
         else if (gamePanel.activeSelf)
         {   
             // run game
             gamePanel.SetActive(false);
+			gameState = GameState.Running;
             Time.timeScale = 1.0f;
         }
         else
         {
             // pause game and show menu
             gamePanel.SetActive(true);
+			gameState = GameState.Paused;
             Time.timeScale = 0f;
         }
     }
