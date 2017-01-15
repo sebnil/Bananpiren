@@ -117,8 +117,8 @@ public class GameController : Singleton<GameController> {
             maxNumberOfCratesOnBoat = numberOfCratesOnBoat;
         }
 
-		progressText.text = "Number of crates delivered: " + numberOfCratesDelivered;
-		timeLeftText.text = "Time left: " + Mathf.Floor(timeLeft) + "s";
+		progressText.text = numberOfCratesDelivered.ToString();
+		timeLeftText.text = Mathf.Floor(timeLeft).ToString();
 
 		debugText.text = "crateDeliveredTimeBonus: " + crateDeliveredTimeBonus + 
 		"\ncrateDroppedTimePunishment: " + crateDroppedTimePunishment +
