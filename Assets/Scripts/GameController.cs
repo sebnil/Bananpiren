@@ -35,7 +35,6 @@ public class GameController : Singleton<GameController> {
 	public float crateDeliveredTimeBonus = 5;
 	public float crateDroppedTimePunishment = 10;
 	public float crateDeliveredTimeBonusDecrementFactor;
-	private bool gameOver = false;
 	public GameState gameState = GameState.Running;
 
 	[System.Serializable]
@@ -201,13 +200,12 @@ public class GameController : Singleton<GameController> {
 				crateDeliveredTimeBonus = 2;
 			}
 
-			if (!gameOver && timeLeft > 0) {
+			if (gameState == GameState.Running && timeLeft > 0) {
 				timeLeft--;
 				if (timeLeft < 0) {
 					timeLeft = 0;
 				}
-			} else if (!gameOver) {
-				gameOver = true;
+			} else if (gameState == GameState.Running) {
 				gameState = GameState.GameOver;
 				ToggleMenu ();
 			} else {
