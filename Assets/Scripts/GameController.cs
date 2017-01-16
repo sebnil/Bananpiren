@@ -27,10 +27,13 @@ public class GameController : Singleton<GameController> {
 
     public Text progressText;
 	public Text timeLeftText;
+    public Text ripenFactorText;
+    public Text wavesFactorText;
 	public Text debugText;
     public int numberOfCratesOnBoat = 0;
     public int maxNumberOfCratesOnBoat = 0;
 	public int numberOfCratesDelivered = 0;
+    public float totalTime;
 	public float timeLeft;
 	public float crateDeliveredTimeBonus = 5;
 	public float crateDroppedTimePunishment = 10;
@@ -52,6 +55,27 @@ public class GameController : Singleton<GameController> {
 	}
 	public CrateTimers crateTimers;
 
+    [System.Serializable]
+    public class RipenTimers
+    {
+        public float ripenFactor2Threshold;
+        public float ripenFactor2Factor;
+        public float ripenFactor3Threshold;
+        public float ripenFactor3Factor;
+    }
+    public RipenTimers ripenTimers;
+    public float currentRipenFactor;
+
+    [System.Serializable]
+    public class WaveTimers
+    {
+        public float waveFactor2Threshold;
+        public float waveFactor2Factor;
+        public float waveFactor3Threshold;
+        public float waveFactor3Factor;
+    }
+    public WaveTimers waveTimers;
+    public float currentWaveFactor;
 
     Ray ray;
     RaycastHit hit;
@@ -119,8 +143,11 @@ public class GameController : Singleton<GameController> {
 
 		progressText.text = numberOfCratesDelivered.ToString();
 		timeLeftText.text = Mathf.Floor(timeLeft).ToString();
+        ripenFactorText.text = "Ripen x" + currentRipenFactor;
+        wavesFactorText.text = "Waves x" + currentWaveFactor * 10f;
 
-		debugText.text = "crateDeliveredTimeBonus: " + crateDeliveredTimeBonus + 
+
+        debugText.text = "crateDeliveredTimeBonus: " + crateDeliveredTimeBonus + 
 		"\ncrateDroppedTimePunishment: " + crateDroppedTimePunishment +
 		"\nver " + AppInfo.fullVersion;
     }
@@ -194,7 +221,38 @@ public class GameController : Singleton<GameController> {
 		while (true) {
 			yield return new WaitForSeconds (1f);
 
-			if (crateDeliveredTimeBonus > 2) {
+            totalTime++;
+
+            // update ripen factor
+            if (totalTime >= ripenTimers.ripenFactor3Threshold)
+            {
+                currentRipenFactor = ripenTimers.ripenFactor3Factor;
+            }
+            else if (totalTime >= ripenTimers.ripenFactor2Threshold)
+            {
+                currentRipenFactor = ripenTimers.ripenFactor2Factor;
+            }
+            else
+            {
+                currentRipenFactor = 1;
+            }
+
+            // update wave timers
+            if (totalTime >= waveTimers.waveFactor3Threshold)
+            {
+                currentWaveFactor = waveTimers.waveFactor3Factor;
+            }
+            else if (totalTime >= waveTimers.waveFactor2Threshold)
+            {
+                currentWaveFactor = waveTimers.waveFactor2Factor;
+            }
+            else
+            {
+                currentWaveFactor = 0.05f;
+            }
+
+
+            if (crateDeliveredTimeBonus > 2) {
 				crateDeliveredTimeBonus = crateDeliveredTimeBonus - Time.timeSinceLevelLoad * crateDeliveredTimeBonusDecrementFactor;
 			} else {
 				crateDeliveredTimeBonus = 2;

@@ -20,6 +20,8 @@ public class WaveGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        waveScale = GameController.Instance.currentWaveFactor;
+
         //mesh = GetComponent<MeshFilter>().mesh;
         Vector3[] vertices = mesh.vertices;
 

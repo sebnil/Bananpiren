@@ -17,7 +17,7 @@ public class Crate : MonoBehaviour
 	public bool inCargoZone = false;
 	public float relativeVelocityMagnitude;
 
-	public int timeRemaining;
+	public float timeRemaining;
 
 	[System.Serializable]
 	public class CrateMaterials
@@ -84,7 +84,17 @@ Green,
 				Destroy (this.gameObject);
 				GameObject crateDeliveredTextInstance = Instantiate (crateDeliveredTextPrefab, transform.position, transform.rotation) as GameObject;
 				TextMesh t = crateDeliveredTextInstance.GetComponent<TextMesh> ();
-				t.text = "+" + getCurrentTimeBonus ();
+                float currentTimeBonus = getCurrentTimeBonus();
+
+                if (currentTimeBonus > 0) {
+                    t.text = "+" + getCurrentTimeBonus();
+                }
+                else
+                {
+                    t.text = "-" + getCurrentTimeBonus();
+                    t.color = Color.red;
+                }
+                
 			}
 		} else {
 			// do nothing
@@ -169,7 +179,7 @@ Green,
 
 	void decreaseTimeRemaining ()
 	{
-		timeRemaining--;
+        timeRemaining = timeRemaining - GameController.Instance.currentRipenFactor;
         CrateState currentState = crateState;
 		if (timeRemaining < GameController.Instance.crateTimers.rottenThreshold) {
 			renderer.material = crateMaterials.crateRottenBananas;
