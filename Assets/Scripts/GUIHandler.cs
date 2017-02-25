@@ -134,7 +134,7 @@ public class GUIHandler : Singleton<GUIHandler> {
 
     public bool GetMusicPreference()
     {
-        return PlayerPrefs.GetInt("MusicEnabled") == 1 ? true : false;
+        return PlayerPrefs.GetInt("MusicEnabled", 1) == 1 ? true : false;
     }
 
     public void updateButton() {
