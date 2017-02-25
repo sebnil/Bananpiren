@@ -84,15 +84,22 @@ public class GameController : Singleton<GameController> {
 	public GameObject craneObject;
 	private Crane craneScript;
 
+    // Music
+    public AudioSource musicSource;
+
     // Use this for initialization
     void Start () {
 		craneScript = craneObject.GetComponent<Crane>();
+        musicSource = GetComponent<AudioSource>();
 
         // force landscape on mobile
         Screen.orientation = ScreenOrientation.LandscapeLeft;
 
 		// start countdown timer
 		StartCoroutine("GameOverTimer");
+
+        // update music state
+        StartOrStopMusic();
     }
 	
 	// Update is called once per frame
@@ -203,6 +210,9 @@ public class GameController : Singleton<GameController> {
 			gameState = GameState.Paused;
             Time.timeScale = 0f;
         }
+
+        // update music state
+        StartOrStopMusic();
     }
 
     public void RestartScene()
@@ -217,9 +227,9 @@ public class GameController : Singleton<GameController> {
         Application.Quit();
     }
 
-	IEnumerator GameOverTimer() {
-		while (true) {
-			yield return new WaitForSeconds (1f);
+    IEnumerator GameOverTimer() {
+        while (true) {
+            yield return new WaitForSeconds(1f);
 
             totalTime++;
 
@@ -253,23 +263,46 @@ public class GameController : Singleton<GameController> {
 
 
             if (crateDeliveredTimeBonus > 2) {
-				crateDeliveredTimeBonus = crateDeliveredTimeBonus - Time.timeSinceLevelLoad * crateDeliveredTimeBonusDecrementFactor;
-			} else {
-				crateDeliveredTimeBonus = 2;
-			}
+                crateDeliveredTimeBonus = crateDeliveredTimeBonus - Time.timeSinceLevelLoad * crateDeliveredTimeBonusDecrementFactor;
+            } else {
+                crateDeliveredTimeBonus = 2;
+            }
 
-			if (gameState == GameState.Running && timeLeft > 0) {
-				timeLeft--;
-				if (timeLeft < 0) {
-					timeLeft = 0;
-				}
-			} else if (gameState == GameState.Running) {
-				gameState = GameState.GameOver;
-				ToggleMenu ();
-			} else {
-				// do nothing
-			}
-		}
-	}
-		
+            if (gameState == GameState.Running && timeLeft > 0) {
+                timeLeft--;
+                if (timeLeft < 0) {
+                    timeLeft = 0;
+                }
+            } else if (gameState == GameState.Running) {
+                gameState = GameState.GameOver;
+                ToggleMenu();
+            } else {
+                // do nothing
+            }
+        }
+    }
+
+
+    public void StartOrStopMusic()
+    {
+        bool musicEnabled = GUIHandler.Instance.GetMusicPreference();
+        bool musicAllowed = (gameState == GameState.Running);
+
+        // stop music if it is either not enabled or allowed
+        if (!musicEnabled || !musicAllowed)
+        {
+            musicSource.Pause();
+        }
+        // start playing music if it is not playing, it is enabled and allowed
+        else if (!musicSource.isPlaying && musicEnabled && musicAllowed)
+        {
+            musicSource.Play();
+        }
+        else
+        {
+            // do nothing
+        }
+    }
+
+
 }

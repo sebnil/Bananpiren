@@ -126,7 +126,18 @@ public class GUIHandler : Singleton<GUIHandler> {
 		updateButton ();
 	}
 
-	public void updateButton() {
+    public void SetMusicPreference(bool enabled)
+    {
+        Debug.Log("SetMusicPreference: " + enabled);
+        PlayerPrefs.SetInt("MusicEnabled", enabled ? 1 : 0);
+    }
+
+    public bool GetMusicPreference()
+    {
+        return PlayerPrefs.GetInt("MusicEnabled") == 1 ? true : false;
+    }
+
+    public void updateButton() {
 		KeyboardButton.GetComponent<GUIButtonStyling> ().SetSelected (false);
 		HUDButton.GetComponent<GUIButtonStyling> ().SetSelected (false);
 		AccelerometerButton.GetComponent<GUIButtonStyling> ().SetSelected (false);
