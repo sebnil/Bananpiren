@@ -83,7 +83,7 @@ public class Build : MonoBehaviour
         PlayerSettings.companyName = AppInfo.companyName;
         PlayerSettings.productName = AppInfo.longName;
 
-        PlayerSettings.bundleIdentifier = AppInfo.appleBundleId;
+        PlayerSettings.applicationIdentifier = AppInfo.appleBundleId;
         PlayerSettings.bundleVersion = AppInfo.fullVersion;
 
         List<string> buildScenes = new List<string>(scenes);
@@ -99,7 +99,7 @@ public class Build : MonoBehaviour
         if (target == BuildTarget.Android)
         {
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeRight;
-            PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel9;
+            PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel16;
 
             //PlayerSettings.Android.keystorePass = "";
             //PlayerSettings.Android.keyaliasName = "";
