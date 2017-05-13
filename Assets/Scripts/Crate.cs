@@ -68,7 +68,7 @@ Green,
 		playerController = GameObject.FindWithTag ("Player").GetComponent<PlayerController> ();
 		gameController = GameObject.FindWithTag ("GameController").GetComponent<GameController> ();
 
-		timeRemaining = GameController.Instance.crateTimers.timerStart;
+		timeRemaining = gameController.crateTimers.timerStart;
 		InvokeRepeating ("decreaseTimeRemaining", 1.0f, 1.0f);
 	}
 	
@@ -179,15 +179,15 @@ Green,
 
 	void decreaseTimeRemaining ()
 	{
-        timeRemaining = timeRemaining - GameController.Instance.currentRipenFactor;
+        timeRemaining = timeRemaining - gameController.currentRipenFactor;
         CrateState currentState = crateState;
-		if (timeRemaining < GameController.Instance.crateTimers.rottenThreshold) {
+		if (timeRemaining < gameController.crateTimers.rottenThreshold) {
 			renderer.material = crateMaterials.crateRottenBananas;
 			crateState = CrateState.Rotten;
-		} else if (timeRemaining < GameController.Instance.crateTimers.brownThreshold) {
+		} else if (timeRemaining < gameController.crateTimers.brownThreshold) {
 			renderer.material = crateMaterials.crateBrownBananas;
 			crateState = CrateState.Brown;
-		} else if (timeRemaining < GameController.Instance.crateTimers.yellowThreshold) {
+		} else if (timeRemaining < gameController.crateTimers.yellowThreshold) {
 			renderer.material = crateMaterials.crateYellowBananas;
 			crateState = CrateState.Yellow;
         } else {
@@ -222,23 +222,23 @@ Green,
 	void showDroppedCrateText(Vector3 pos, Quaternion rot) {
 		GameObject crateDeliveredTextInstance = Instantiate (crateDroppedTextPrefab, pos, rot) as GameObject;
 		TextMesh t = crateDeliveredTextInstance.GetComponent<TextMesh> ();
-		t.text = "-" + getCurrentTimeBonus ();
+        t.text = "-" + gameController.crateDroppedTimePunishment.ToString("F0");
 	}
 
 	float getCurrentTimeBonus ()
 	{
 		switch (crateState) {
 		case CrateState.Rotten:
-			return GameController.Instance.crateTimers.timeBonusRotten;
+			return gameController.crateTimers.timeBonusRotten;
 			break;
 		case CrateState.Brown:
-			return GameController.Instance.crateTimers.timeBonusBrown;
+			return gameController.crateTimers.timeBonusBrown;
 			break;
 		case CrateState.Yellow:
-			return GameController.Instance.crateTimers.timeBonusYellow;
+			return gameController.crateTimers.timeBonusYellow;
 			break;
 		default:
-			return GameController.Instance.crateTimers.timeBonusGreen;
+			return gameController.crateTimers.timeBonusGreen;
 			break;
 		}
 	}

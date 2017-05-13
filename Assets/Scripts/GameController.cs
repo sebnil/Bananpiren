@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using com.kleberswf.lib.core;
+using Bananpiren.Secrets;
 
 public enum GameState {Running, Paused, GameOver};
 
@@ -92,11 +93,18 @@ public class GameController : Singleton<GameController> {
 		craneScript = craneObject.GetComponent<Crane>();
         musicSource = GetComponent<AudioSource>();
 
-        // force landscape on mobile
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        // Authenticate on start
+        LeaderboardManager.AuthenticateToSocialPlatform();
 
-		// start countdown timer
-		StartCoroutine("GameOverTimer");
+        // force landscape on mobile
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.orientation = ScreenOrientation.AutoRotation;
+
+        // start countdown timer
+        StartCoroutine("GameOverTimer");
 
         // update music state
         StartOrStopMusic();
@@ -187,10 +195,7 @@ public class GameController : Singleton<GameController> {
 
     public void ToggleMenu()
     {
-		if (gameState == GameState.GameOver && AppInfo.debugRelease) {
-			// do nothing
-		}
-		else if (gameState == GameState.GameOver) {
+		if (gameState == GameState.GameOver) {
 			// pause game and show menu
 			gameOverPanel.SetActive(true);
 			//gameState = GameState.Paused;
@@ -274,14 +279,35 @@ public class GameController : Singleton<GameController> {
                     timeLeft = 0;
                 }
             } else if (gameState == GameState.Running) {
-                gameState = GameState.GameOver;
-                ToggleMenu();
+                GameOver();
             } else {
                 // do nothing
             }
         }
     }
 
+    public void GameOver()
+    {
+        gameState = GameState.GameOver;
+        
+        ToggleMenu();
+        LeaderboardManager.ReportScore(numberOfCratesDelivered, SocialPlatformConstants.leaderBoardId);
+    }
+
+    public int GetLastScore()
+    {
+        return numberOfCratesDelivered;
+    }
+
+    public void DebugIncreaseTime()
+    {
+        timeLeft += 4;
+    }
+
+    public void DebugDecreaseTime()
+    {
+        timeLeft -= 4;
+    }
 
     public void StartOrStopMusic()
     {

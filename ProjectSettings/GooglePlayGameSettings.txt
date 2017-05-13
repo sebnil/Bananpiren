@@ -1,0 +1,9 @@
+lastUpgrade=00938
+proj.pluginVersion=0.9.38
+proj.AppId=113076111367
+and.BundleId=com.crocoraff.bananpiren
+proj.classDir=Assets
+proj.ConstantsClassName=GPGSIds
+and.ResourceData=%3cresources%3e%0d%0a++%3cstring+name%3d%22app_id%22%3e113076111367%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22package_name%22%3ecom.crocoraff.bananpiren%3c%2fstring%3e%0d%0a++%3cstring+name%3d%22leaderboard_leaderboard%22%3eCgkIh5DynqUDEAIQAQ%3c%2fstring%3e%0d%0a%3c%2fresources%3e%0d%0a
+and.ClientId=
+android.SetupDone=true

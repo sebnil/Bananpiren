@@ -1,0 +1,3 @@
+[submodule "Assets/Secrets"]
+	path = Assets/Secrets
+	url = https://bitbucket.org/sebnil/shipper-secrets.git
