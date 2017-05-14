@@ -138,7 +138,7 @@ Green,
 	void OnCollisionEnter (Collision collision)
 	{
 
-		Debug.Log ("crate with something hard with rel vel: " + collision.relativeVelocity.magnitude);
+		//Debug.Log ("crate with something hard with rel vel: " + collision.relativeVelocity.magnitude);
 		if (collision.relativeVelocity.magnitude > crateHitBoatSoundVelocityThreshold) {
 			audioSource.PlayOneShot (crateHitBoat [Random.Range ((int)0, (int)crateHitBoat.Length)]);
 		}

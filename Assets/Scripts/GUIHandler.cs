@@ -116,7 +116,13 @@ public class GUIHandler : Singleton<GUIHandler> {
 		
 		int inputMethodFromPrefs = GetSelectedIndexFromPreferences ();
 		Debug.Log ("GetPlayerControlInput:" + inputMethodFromPrefs);
-		return (ControlInput)inputMethodFromPrefs;
+		ControlInput controlInput = (ControlInput)inputMethodFromPrefs;
+
+		if (!hasKeyboard() && controlInput == ControlInput.Keyboard) {
+			controlInput = ControlInput.HUD;
+		}
+
+		return controlInput;
 	}
 
 	public void SetPlayerControlInput(int ci) {
@@ -186,5 +192,16 @@ public class GUIHandler : Singleton<GUIHandler> {
 #else
 		return false;
 #endif
+	}
+
+	bool hasKeyboard() 
+	{
+		if (isMobile())
+		{
+			return false;
+		}
+		else {
+			return false;
+		}
 	}
 }
