@@ -7,6 +7,6 @@ node('unity3d') {
 	}
 	stage('Archive') {
 		archive 'bin'
-		archive ${LOCALAPPDATA}\Unity\Editor\Editor.log
+		archive ${LOCALAPPDATA}/Unity/Editor/Editor.log
 	}
 }
