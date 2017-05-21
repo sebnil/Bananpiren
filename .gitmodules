@@ -1,3 +1,12 @@
 [submodule "Assets/Secrets"]
 	path = Assets/Secrets
 	url = https://bitbucket.org/sebnil/shipper-secrets.git
+[submodule "Assets/Scripts/Singleton"]
+	path = Assets/Scripts/Singleton
+	url = https://github.com/SteBeeGizmo/Singleton.git
+[submodule "Assets/SuperUnityBuild"]
+	path = Assets/SuperUnityBuild
+	url = https://github.com/Chaser324/unity-build.git
+[submodule "Assets/SuperUnityBuildActions"]
+	path = Assets/SuperUnityBuildActions
+	url = https://github.com/Chaser324/unity-build-actions

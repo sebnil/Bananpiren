@@ -164,7 +164,7 @@ public class GameController : Singleton<GameController> {
 
         debugText.text = "crateDeliveredTimeBonus: " + crateDeliveredTimeBonus + 
 		"\ncrateDroppedTimePunishment: " + crateDroppedTimePunishment +
-		"\nver " + AppInfo.fullVersion;
+		"\nver " + BuildConstants.version;
     }
 
 	public void IncrementNumberOfCratesDelivered(Crate.CrateState crateState) {
