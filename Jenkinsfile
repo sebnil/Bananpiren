@@ -20,10 +20,12 @@ node('unity3d') {
 		}
 
 		if (r != 0) {
+			echo "return from build.bat indicates error. build will fail.."
 			throw error
 		}
 	}
 	stage('Archive') {
+		echo "Archive"
 		archive "bin/**/*.zip"
 	}
 }
