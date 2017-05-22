@@ -4,7 +4,15 @@ node('unity3d') {
 		bat 'git submodule update --init'
 	}
 	stage('Build') {
-    bat 'build.bat'
+		try {
+    	bat 'build.bat'
+		}
+		catch (error) {
+			throw error
+		}
+		finally {
+			archive "${LOCALAPPDATA}/Unity/Editor/Editor.log"
+		}
 	}
 	stage('Archive') {
 		archive 'bin'
