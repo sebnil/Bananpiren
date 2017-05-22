@@ -15,7 +15,6 @@ node('unity3d') {
 		}
 		finally {
 			echo 'finally'
-			archive "README.md"
 			archive "C:/Users/Administrator/AppData/Local/Unity/Editor/Editor.log"
 		}
 
