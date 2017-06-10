@@ -10,6 +10,7 @@ public class HUDController : MonoBehaviour {
     public Text timeLeftText;
     public Transform ripenFactorTransform;
     public Text ripenFactorText;
+    public Transform wavesFactorTransform;
     public Text wavesFactorText;
     public Text debugText;
 
@@ -38,30 +39,15 @@ public class HUDController : MonoBehaviour {
 
 
         // animations when crates get delivered
-        if (newCrateDelivered())
-        {
-            newCrateDeliveredAnimationTimer = 0;
-        }
-        else
-        {
-            stepAnimationTimer(ref newCrateDeliveredAnimationTimer, animationRate);
-        }
-
-        if (ripenFactorChanged())
-        {
-            ripenFactorAnimationTimer = 0;
-        }
-        else
-        {
-            stepAnimationTimer(ref ripenFactorAnimationTimer, animationRate);
-        }
-
-        float scale = Mathf.Lerp(2, 1, newCrateDeliveredAnimationTimer);
+        float scale = stepAnimationTimer(ref newCrateDeliveredAnimationTimer, animationRate, newCrateDelivered());
         timeLeftTransform.localScale = new Vector3(scale, scale, 1);
         progressTransform.localScale = new Vector3(scale, scale, 1);
 
-        scale = Mathf.Lerp(2, 1, ripenFactorAnimationTimer);
-        ripenFactorTransform.localScale = new Vector3(scale, scale, 1);
+        float scale2 = stepAnimationTimer(ref ripenFactorAnimationTimer, animationRate, ripenFactorChanged());
+        ripenFactorTransform.localScale = new Vector3(scale2, scale2, 1);
+
+        scale = stepAnimationTimer(ref wavesFactorAnimationTimer, animationRate, wavesFactorChanged());
+        wavesFactorTransform.localScale = new Vector3(scale, scale, 1);
 
         // warn the gamer that time is almost up
         if (GameController.Instance.timeLeft < 10)
@@ -76,9 +62,13 @@ public class HUDController : MonoBehaviour {
         }
     }
 
-    void stepAnimationTimer(ref float timer, float animationRate)
+    float stepAnimationTimer(ref float timer, float animationRate, bool reset)
     {
-        if (timer < 1)
+        if (reset)
+        {
+            timer = 0;
+        }
+        else if (timer < 1)
         {
             timer += Time.deltaTime * animationRate;
         }
@@ -86,6 +76,7 @@ public class HUDController : MonoBehaviour {
         {
             timer = 1;
         }
+        return Mathf.Lerp(2, 1, timer);
     }
 
     int cratesDelivered = 0;
@@ -109,6 +100,18 @@ public class HUDController : MonoBehaviour {
             value = true;
         }
         ripenFactor = GameController.Instance.currentRipenFactor;
+        return value;
+    }
+
+    float wavesFactor = 0;
+    bool wavesFactorChanged()
+    {
+        bool value = false;
+        if (GameController.Instance.currentWaveFactor != wavesFactor)
+        {
+            value = true;
+        }
+        wavesFactor = GameController.Instance.currentWaveFactor;
         return value;
     }
 }
