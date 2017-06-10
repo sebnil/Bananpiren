@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using com.kleberswf.lib.core;
+using UnityEngine.SceneManagement;
 
 public enum ControlInput {Keyboard, HUD, Accelerometer};
 
@@ -39,14 +40,14 @@ public class GUIHandler : Singleton<GUIHandler> {
 		possibleInputCount = 1;
 
 
-		if (isEditor () || isMobile ()) {
+		if (PlatformHelperFunctions.isEditor() || PlatformHelperFunctions.isMobile()) {
 			AccelerometerButton.gameObject.SetActive (true);
 			possibleInputCount++;
 		} else {
 			AccelerometerButton.gameObject.SetActive (false);
 		}
 
-		if (isEditor () || !isMobile ()) {
+		if (PlatformHelperFunctions.isEditor() || !PlatformHelperFunctions.isMobile()) {
 			KeyboardButton.gameObject.SetActive (true);
 			possibleInputCount++;
 		} else {
@@ -118,7 +119,7 @@ public class GUIHandler : Singleton<GUIHandler> {
 		Debug.Log ("GetPlayerControlInput:" + inputMethodFromPrefs);
 		ControlInput controlInput = (ControlInput)inputMethodFromPrefs;
 
-		if (!hasKeyboard() && controlInput == ControlInput.Keyboard) {
+		if (!PlatformHelperFunctions.hasKeyboard() && controlInput == ControlInput.Keyboard) {
 			controlInput = ControlInput.HUD;
 		}
 
@@ -175,33 +176,15 @@ public class GUIHandler : Singleton<GUIHandler> {
 		}
 	}
 
-	bool isEditor() {
-		#if UNITY_EDITOR
-		return true;
-		#else
-		return false;
-		#endif
-	}
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //gamePanel.SetActive(false);
+        Time.timeScale = 1.0f;
+    }
 
-	bool isMobile ()
-	{
-#if UNITY_ANDROID
-		return true;
-#elif UNITY_IPHONE
-		return true;
-#else
-		return false;
-#endif
-	}
-
-	bool hasKeyboard() 
-	{
-		if (isMobile())
-		{
-			return false;
-		}
-		else {
-			return false;
-		}
-	}
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

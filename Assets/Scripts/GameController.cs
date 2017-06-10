@@ -220,18 +220,6 @@ public class GameController : Singleton<GameController> {
         StartOrStopMusic();
     }
 
-    public void RestartScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        gamePanel.SetActive(false);
-        Time.timeScale = 1.0f;
-    }
-
-    public void ExitGame()
-    {
-        Application.Quit();
-    }
-
     IEnumerator GameOverTimer() {
         while (true) {
             yield return new WaitForSeconds(1f);
