@@ -301,7 +301,7 @@ public class GameController : Singleton<GameController> {
 
     public void DebugIncreaseTime()
     {
-        timeLeft += 4;
+        timeLeft += 60;
     }
 
     public void DebugDecreaseTime()
