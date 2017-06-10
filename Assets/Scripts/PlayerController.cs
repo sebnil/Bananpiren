@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
 
 	public float maxTranslationalVelocity;
 
-
+    float moveHorizontal;
 
     // Use this for initialization
     void Start () {
@@ -19,26 +19,31 @@ public class PlayerController : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-		float moveHorizontal;
+	void FixedUpdate () {
+		// get input
 		switch (GUIHandler.Instance.controlInput) {
-
-		case ControlInput.HUD:
-			moveHorizontal = CnInputManager.GetAxis("Horizontal");
-			break;
-		case ControlInput.Accelerometer:
-			moveHorizontal = Mathf.Clamp(Input.acceleration.x * 5f, -1f, 1f);
-			break;
-		case ControlInput.Keyboard:
-		default:
-			moveHorizontal = Input.GetAxis ("Horizontal");
-			break;
+		    case ControlInput.HUD:
+			    moveHorizontal = CnInputManager.GetAxis("Horizontal");
+			    break;
+		    case ControlInput.Accelerometer:
+			    moveHorizontal = Mathf.Clamp(Input.acceleration.x * 5f, -1f, 1f);
+			    break;
+		    case ControlInput.Keyboard:
+		    default:
+			    moveHorizontal = Input.GetAxis ("Horizontal");
+			    break;
 		}
-			
+		
+        // create movement
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
-
         rb.AddForce(movement * speed);
 
+        // clamp velocity
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxTranslationalVelocity);
+    }
+
+	void Update() {
+        // particle effect
         if (moveHorizontal != 0)
         {
             boatWakeParticles.emit = true;
@@ -48,11 +53,6 @@ public class PlayerController : MonoBehaviour {
             boatWakeParticles.emit = false;
         }
     }
-
-	void FixedUpdate() {
-		// clamp velocity
-		rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxTranslationalVelocity);
-	}
 
 	void OnTriggerEnter(Collider other)
 	{

@@ -19,7 +19,7 @@ public class WaveGenerator : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
         waveScale = GameController.Instance.currentWaveFactor;
 

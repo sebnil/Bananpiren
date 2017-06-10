@@ -59,11 +59,6 @@ public class Crane : MonoBehaviour {
 		jointConnected = true;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-
-	}
-
 	public void LetGoOfCrate() {
         PlayerHasDropedAtLeastOneCrate = true;
 

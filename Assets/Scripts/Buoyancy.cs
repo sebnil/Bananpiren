@@ -73,10 +73,20 @@ public class Buoyancy : MonoBehaviour {
 	}
 
 
-	void Update() {
+	void FixedUpdate() {
 		updateRho ();
 		GenerateUnderwaterMesh();
-	}
+
+        if (underwaterTriangles == null)
+        {
+            return;
+        }
+        //Will add buoyance so it can float, and drifting from the waves
+        if (underwaterTriangles.Count > 0)
+        {
+            AddForcesToBoat();
+        }
+    }
 
 	//Will generate the mesh that's under the water
 	//You can display the mesh, but it will float without it, we just need the data
@@ -355,16 +365,6 @@ public class Buoyancy : MonoBehaviour {
 	void AddCoordinateToMesh(Vector3 coord) {
 		underwaterVertices.Add(coord);
 		underwaterTriangles.Add(underwaterVertices.Count - 1);
-	}
-
-	void FixedUpdate() {		
-		if (underwaterTriangles == null) {
-			return;
-		}
-		//Will add buoyance so it can float, and drifting from the waves
-		if (underwaterTriangles.Count > 0) {
-			AddForcesToBoat();
-		}
 	}
 
 	//Will add buoyance so it can float, and drifting from the waves

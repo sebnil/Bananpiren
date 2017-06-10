@@ -9,11 +9,6 @@ public class DestroyAfterTimeout : MonoBehaviour {
 		StartCoroutine ("DestroyMe");
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 
 	IEnumerator DestroyMe() {
 		yield return new WaitForSeconds(5);
