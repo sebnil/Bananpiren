@@ -69,7 +69,6 @@ public class Crane : MonoBehaviour {
         crateRb.angularDrag = originalCrateRbAngularDrag;
         float speedX = crateRb.velocity.x * swingXVelocityFactorOnRelease;
         crateRb.velocity = new Vector3(speedX, crateRb.velocity.y, crateRb.velocity.z);
-        //crateRb.isKinematic = false;
         crateRb = null;
 		jointConnected = false;
 		positionState = PositionState.MovingUp;
