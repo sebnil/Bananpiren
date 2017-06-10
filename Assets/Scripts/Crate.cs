@@ -81,21 +81,49 @@ Green,
 
 			if (playerController.isInUnloadingZone) {
 				gameController.IncrementNumberOfCratesDelivered (crateState);
-				Destroy (this.gameObject);
+
+                // create time bonus text
 				GameObject crateDeliveredTextInstance = Instantiate (crateDeliveredTextPrefab, transform.position, transform.rotation) as GameObject;
 				TextMesh t = crateDeliveredTextInstance.GetComponent<TextMesh> ();
                 float currentTimeBonus = getCurrentTimeBonus();
 
+                // set text
                 if (currentTimeBonus > 0) {
                     t.text = "+" + getCurrentTimeBonus();
                 }
                 else
                 {
                     t.text = "-" + getCurrentTimeBonus();
-                    t.color = Color.red;
                 }
-                
-			}
+
+                // set color and size of text
+                switch (crateState)
+                {
+                    case CrateState.Green:
+                        t.fontSize = 19;
+                        t.color = Color.green;
+                        break;
+                    case CrateState.Yellow:
+                        t.fontSize = 50;
+                        t.color = Color.yellow;
+                        break;
+                    case CrateState.Brown:
+                        t.fontSize = 19;
+                        t.color = new Color32(0x77, 0x37, 0x11, 0xFF);
+                        break;
+                    case CrateState.Rotten:
+                        t.fontSize = 19;
+                        t.color = Color.red;
+                        break;
+                    default:
+                        t.fontSize = 1;
+                        t.color = Color.red;
+                        break;
+                }
+
+                // destroy this crate
+                Destroy(this.gameObject);
+            }
 		} else {
 			// do nothing
 		}
@@ -230,16 +258,12 @@ Green,
 		switch (crateState) {
 		case CrateState.Rotten:
 			return gameController.crateTimers.timeBonusRotten;
-			break;
 		case CrateState.Brown:
 			return gameController.crateTimers.timeBonusBrown;
-			break;
 		case CrateState.Yellow:
 			return gameController.crateTimers.timeBonusYellow;
-			break;
 		default:
 			return gameController.crateTimers.timeBonusGreen;
-			break;
 		}
 	}
 }
