@@ -9,7 +9,26 @@ public enum GameState {Running, Paused, GameOver};
 
 public class GameController : Singleton<GameController> {
 
-	protected GameController () {} // guarantee this will be always a singleton only - can't use the constructor!
+    #region Singleton<T> boilerplate
+    protected override bool isGlobalScope
+    {
+        get
+        {
+            return false;
+        }
+    }
+    void Awake()
+    {
+        // You MUST call the base class onAwake() method
+        //	before you exit Awake().
+        onAwake();
+    }
+    void OnDestroy()
+    {
+        base.onDestroy();
+    }
+    #endregion
+
 
     public GameObject gamePanel;
 	public GameObject gameOverPanel;
@@ -218,18 +237,6 @@ public class GameController : Singleton<GameController> {
 
         // update music state
         StartOrStopMusic();
-    }
-
-    public void RestartScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        gamePanel.SetActive(false);
-        Time.timeScale = 1.0f;
-    }
-
-    public void ExitGame()
-    {
-        Application.Quit();
     }
 
     IEnumerator GameOverTimer() {

@@ -4,11 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 public class LeaderboardMessageController : MonoBehaviour {
     Text message;
-    GameController gameController;
 
     void Start()
     {
-        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         message = GetComponent<Text>();
     }
 
@@ -16,11 +14,11 @@ public class LeaderboardMessageController : MonoBehaviour {
     {
         if (Social.localUser.authenticated)
         {        
-            message.text = "You delivered " + gameController.GetLastScore().ToString("F0") + " crates! Check out the leaderboard!";
+            message.text = "You delivered " + GameController.Instance.GetLastScore().ToString("F0") + " crates! Check out the leaderboard!";
         }
         else
         {
-            message.text = "You delivered " + gameController.GetLastScore().ToString("F0") + " crates!";
+            message.text = "You delivered " + GameController.Instance.GetLastScore().ToString("F0") + " crates!";
         }
 
     }

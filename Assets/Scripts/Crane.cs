@@ -34,8 +34,10 @@ public class Crane : MonoBehaviour {
 
 	AudioSource audioSource;
 
-	// Use this for initialization
-	void Start () {
+    public bool PlayerHasDropedAtLeastOneCrate = false;
+
+    // Use this for initialization
+    void Start () {
 		hingejoint = GetComponent<HingeJoint> ();
 		rb = GetComponent<Rigidbody> ();
 		tr = GetComponent<Transform> ();
@@ -63,7 +65,9 @@ public class Crane : MonoBehaviour {
 	}
 
 	public void LetGoOfCrate() {
-		hingejoint.connectedBody = null;
+        PlayerHasDropedAtLeastOneCrate = true;
+
+        hingejoint.connectedBody = null;
 		crateRb.mass = originalCrateRbMass;
         crateRb.drag = originalCrateRbDrag;
         crateRb.angularDrag = originalCrateRbAngularDrag;

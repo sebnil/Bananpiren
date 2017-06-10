@@ -8,7 +8,6 @@ public class Crate : MonoBehaviour
 	private Renderer renderer;
 
 	private PlayerController playerController;
-	private GameController gameController;
 	public Rigidbody boatRigidBody;
 
 	public bool onCrane = false;
@@ -66,9 +65,8 @@ Green,
 
 		boatRigidBody = GameObject.FindWithTag ("Player").GetComponent<Rigidbody> ();
 		playerController = GameObject.FindWithTag ("Player").GetComponent<PlayerController> ();
-		gameController = GameObject.FindWithTag ("GameController").GetComponent<GameController> ();
 
-		timeRemaining = gameController.crateTimers.timerStart;
+		timeRemaining = GameController.Instance.crateTimers.timerStart;
 		InvokeRepeating ("decreaseTimeRemaining", 1.0f, 1.0f);
 	}
 	
@@ -80,7 +78,7 @@ Green,
 		if (onBoat) {
 
 			if (playerController.isInUnloadingZone) {
-				gameController.IncrementNumberOfCratesDelivered (crateState);
+				GameController.Instance.IncrementNumberOfCratesDelivered (crateState);
 
                 // create time bonus text
 				GameObject crateDeliveredTextInstance = Instantiate (crateDeliveredTextPrefab, transform.position, transform.rotation) as GameObject;
@@ -150,7 +148,7 @@ Green,
 			double ySpeed = rb.velocity.y * 0.1f;
 			rb.velocity = new Vector3 (rb.velocity.x, (float)ySpeed, rb.velocity.z);
 
-			gameController.PunishForDroppedCrate ();
+			GameController.Instance.PunishForDroppedCrate ();
 			showDroppedCrateText (transform.position, transform.rotation);
 
 		}
@@ -207,15 +205,15 @@ Green,
 
 	void decreaseTimeRemaining ()
 	{
-        timeRemaining = timeRemaining - gameController.currentRipenFactor;
+        timeRemaining = timeRemaining - GameController.Instance.currentRipenFactor;
         CrateState currentState = crateState;
-		if (timeRemaining < gameController.crateTimers.rottenThreshold) {
+		if (timeRemaining < GameController.Instance.crateTimers.rottenThreshold) {
 			renderer.material = crateMaterials.crateRottenBananas;
 			crateState = CrateState.Rotten;
-		} else if (timeRemaining < gameController.crateTimers.brownThreshold) {
+		} else if (timeRemaining < GameController.Instance.crateTimers.brownThreshold) {
 			renderer.material = crateMaterials.crateBrownBananas;
 			crateState = CrateState.Brown;
-		} else if (timeRemaining < gameController.crateTimers.yellowThreshold) {
+		} else if (timeRemaining < GameController.Instance.crateTimers.yellowThreshold) {
 			renderer.material = crateMaterials.crateYellowBananas;
 			crateState = CrateState.Yellow;
         } else {
@@ -250,20 +248,20 @@ Green,
 	void showDroppedCrateText(Vector3 pos, Quaternion rot) {
 		GameObject crateDeliveredTextInstance = Instantiate (crateDroppedTextPrefab, pos, rot) as GameObject;
 		TextMesh t = crateDeliveredTextInstance.GetComponent<TextMesh> ();
-        t.text = "-" + gameController.crateDroppedTimePunishment.ToString("F0");
+        t.text = "-" + GameController.Instance.crateDroppedTimePunishment.ToString("F0");
 	}
 
 	float getCurrentTimeBonus ()
 	{
 		switch (crateState) {
 		case CrateState.Rotten:
-			return gameController.crateTimers.timeBonusRotten;
+			return GameController.Instance.crateTimers.timeBonusRotten;
 		case CrateState.Brown:
-			return gameController.crateTimers.timeBonusBrown;
+			return GameController.Instance.crateTimers.timeBonusBrown;
 		case CrateState.Yellow:
-			return gameController.crateTimers.timeBonusYellow;
+			return GameController.Instance.crateTimers.timeBonusYellow;
 		default:
-			return gameController.crateTimers.timeBonusGreen;
+			return GameController.Instance.crateTimers.timeBonusGreen;
 		}
 	}
 }

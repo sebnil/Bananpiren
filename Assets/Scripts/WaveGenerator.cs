@@ -11,11 +11,9 @@ public class WaveGenerator : MonoBehaviour {
     public float waveDistance;
     public float waveScale;
 
-    GameController gameController;
 
     // Use this for initialization
     void Start () {
-        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         mesh = GetComponent<MeshFilter>().mesh;
         randomTimes = new float[mesh.vertices.Length];
     }
@@ -23,7 +21,7 @@ public class WaveGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        waveScale = gameController.currentWaveFactor;
+        waveScale = GameController.Instance.currentWaveFactor;
 
         //mesh = GetComponent<MeshFilter>().mesh;
         Vector3[] vertices = mesh.vertices;

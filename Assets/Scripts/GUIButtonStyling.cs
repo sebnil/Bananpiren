@@ -11,10 +11,8 @@ public class GUIButtonStyling : MonoBehaviour, IPointerEnterHandler, IPointerExi
 	private bool needRefresh = false;
 	public Color color = Color.white;
 	public GameState previousGameState = GameState.Running;
-    GameController gameController;
 
     public void Start() {
-        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
         button = this.GetComponent<Button>();
 		theText = (Text)button.GetComponentInChildren<Text>();
 	}
@@ -48,7 +46,7 @@ public class GUIButtonStyling : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
 	public void Update ()
 	{
-		if (gameController.gameState != GameState.Running) {
+		if (GameController.Instance.gameState != GameState.Running) {
 			//RefreshColor ();
 			theText.color = color;
 		}
