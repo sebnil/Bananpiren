@@ -14,7 +14,7 @@ public class HUDController : MonoBehaviour {
     public Text wavesFactorText;
     public Text debugText;
 
-    float animationRate = 0.5f;
+    float animationRate = 1f;
 
     int timeLeftOriginalFontSize = 30;
     int timeLeftWarningFontSize = 50;
@@ -39,14 +39,14 @@ public class HUDController : MonoBehaviour {
 
 
         // animations when crates get delivered
-        float scale = stepAnimationTimer(ref newCrateDeliveredAnimationTimer, animationRate, newCrateDelivered());
+        float scale = stepAnimationTimer(ref newCrateDeliveredAnimationTimer, 2, 1, animationRate, newCrateDelivered());
         timeLeftTransform.localScale = new Vector3(scale, scale, 1);
         progressTransform.localScale = new Vector3(scale, scale, 1);
 
-        float scale2 = stepAnimationTimer(ref ripenFactorAnimationTimer, animationRate, ripenFactorChanged());
-        ripenFactorTransform.localScale = new Vector3(scale2, scale2, 1);
+        scale = stepAnimationTimer(ref ripenFactorAnimationTimer, 2, 1, animationRate, ripenFactorChanged());
+        ripenFactorTransform.localScale = new Vector3(scale, scale, 1);
 
-        scale = stepAnimationTimer(ref wavesFactorAnimationTimer, animationRate, wavesFactorChanged());
+        scale = stepAnimationTimer(ref wavesFactorAnimationTimer, 2, 1, animationRate, wavesFactorChanged());
         wavesFactorTransform.localScale = new Vector3(scale, scale, 1);
 
         // warn the gamer that time is almost up
@@ -62,7 +62,8 @@ public class HUDController : MonoBehaviour {
         }
     }
 
-    float stepAnimationTimer(ref float timer, float animationRate, bool reset)
+    // helper function for scale animation
+    float stepAnimationTimer(ref float timer, float startValue, float stopValue, float animationRate, bool reset)
     {
         if (reset)
         {
@@ -76,9 +77,10 @@ public class HUDController : MonoBehaviour {
         {
             timer = 1;
         }
-        return Mathf.Lerp(2, 1, timer);
+        return Mathf.Lerp(startValue, stopValue, timer);
     }
 
+    // helper functions for status updates
     int cratesDelivered = 0;
     bool newCrateDelivered()
     {
