@@ -107,15 +107,12 @@ public class GameController : Singleton<GameController> {
 		craneScript = craneObject.GetComponent<Crane>();
         musicSource = GetComponent<AudioSource>();
 
-        // Authenticate on start
-        LeaderboardManager.AuthenticateToSocialPlatform();
-
         // force landscape on mobile
-        Screen.autorotateToPortrait = false;
+        /*Screen.autorotateToPortrait = false;
         Screen.autorotateToPortraitUpsideDown = false;
         Screen.autorotateToLandscapeLeft = true;
         Screen.autorotateToLandscapeRight = true;
-        Screen.orientation = ScreenOrientation.AutoRotation;
+        Screen.orientation = ScreenOrientation.AutoRotation;*/
 
         // start countdown timer
         StartCoroutine("GameOverTimer");
@@ -276,7 +273,6 @@ public class GameController : Singleton<GameController> {
         gameState = GameState.GameOver;
         
         ToggleMenu();
-        LeaderboardManager.ReportScore(numberOfCratesDelivered, SocialPlatformConstants.leaderBoardId);
     }
 
     public int GetLastScore()

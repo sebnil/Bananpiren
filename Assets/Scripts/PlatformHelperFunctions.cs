@@ -15,7 +15,36 @@ class PlatformHelperFunctions
 #endif
     }
 
+    public static bool isiOS()
+    {
+#if UNITY_IPHONE
+	return true;
+#else
+        return false;
+#endif
+    }
+
+    public static bool isAndroid()
+    {
+#if UNITY_ANDROID
+	return true;
+#else
+        return false;
+#endif
+    }
+
     public static bool isMobile()
+    {
+#if UNITY_ANDROID
+	return true;
+#elif UNITY_IPHONE
+	return true;
+#else
+        return false;
+#endif
+    }
+
+    public static bool hasSocialPlatformCapabilities()
     {
 #if UNITY_ANDROID
 	return true;

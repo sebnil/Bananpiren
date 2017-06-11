@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class LeaderboardMessageController : MonoBehaviour {
     Text message;
+    
 
     void Start()
     {
@@ -12,6 +13,8 @@ public class LeaderboardMessageController : MonoBehaviour {
 
     void Update()
     {
+
+
         if (Social.localUser.authenticated)
         {        
             message.text = "You delivered " + GameController.Instance.GetLastScore().ToString("F0") + " crates! Check out the leaderboard!";
@@ -21,5 +24,8 @@ public class LeaderboardMessageController : MonoBehaviour {
             message.text = "You delivered " + GameController.Instance.GetLastScore().ToString("F0") + " crates!";
         }
 
+
     }
+
+
 }
