@@ -81,11 +81,11 @@ public class HUDController : MonoBehaviour {
     }
 
     // helper functions for status updates
-    int cratesDelivered = 0;
+    int? cratesDelivered = null;
     bool newCrateDelivered()
     {
         bool value = false;
-        if (GameController.Instance.numberOfCratesDelivered != cratesDelivered)
+        if (GameController.Instance.numberOfCratesDelivered != cratesDelivered && cratesDelivered != null)
         {
             value = true;
         }
@@ -93,11 +93,11 @@ public class HUDController : MonoBehaviour {
         return value;
     }
 
-    float ripenFactor = 0;
+    float? ripenFactor = null;
     bool ripenFactorChanged()
     {
         bool value = false;
-        if (GameController.Instance.currentRipenFactor != ripenFactor)
+        if (GameController.Instance.currentRipenFactor != ripenFactor && ripenFactor != null)
         {
             value = true;
         }
@@ -105,11 +105,11 @@ public class HUDController : MonoBehaviour {
         return value;
     }
 
-    float wavesFactor = 0;
+    float? wavesFactor = null;
     bool wavesFactorChanged()
     {
         bool value = false;
-        if (GameController.Instance.currentWaveFactor != wavesFactor)
+        if (GameController.Instance.currentWaveFactor != wavesFactor && wavesFactor != null)
         {
             value = true;
         }
