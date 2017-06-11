@@ -45,22 +45,17 @@ public class GameController : Singleton<GameController> {
 
     public int xMean;
 
-    public Text progressText;
-	public Text timeLeftText;
-    public Text ripenFactorText;
-    public Text wavesFactorText;
-	public Text debugText;
+
     public int numberOfCratesOnBoat = 0;
     public int maxNumberOfCratesOnBoat = 0;
 	public int numberOfCratesDelivered = 0;
     public float totalTime;
 	public float timeLeft;
-	public float crateDeliveredTimeBonus = 5;
-	public float crateDroppedTimePunishment = 10;
-	public float crateDeliveredTimeBonusDecrementFactor;
 	public GameState gameState = GameState.Running;
 
-	[System.Serializable]
+    public float crateDroppedTimePunishment;
+
+    [System.Serializable]
 	public class CrateTimers
 	{
 		public int timerStart;
@@ -174,33 +169,23 @@ public class GameController : Singleton<GameController> {
         {
             maxNumberOfCratesOnBoat = numberOfCratesOnBoat;
         }
-
-		progressText.text = numberOfCratesDelivered.ToString();
-		timeLeftText.text = Mathf.Floor(timeLeft).ToString();
-        ripenFactorText.text = "Ripen x" + currentRipenFactor;
-        wavesFactorText.text = "Waves x" + currentWaveFactor * 10f;
-
-
-        debugText.text = "crateDeliveredTimeBonus: " + crateDeliveredTimeBonus + 
-		"\ncrateDroppedTimePunishment: " + crateDroppedTimePunishment +
-		"\nver " + BuildConstants.version;
     }
 
 	public void IncrementNumberOfCratesDelivered(Crate.CrateState crateState) {
 		numberOfCratesDelivered++;
 		switch (crateState) {
-		case Crate.CrateState.Green:
-			timeLeft += crateTimers.timeBonusGreen;
-			break;
-		case Crate.CrateState.Yellow:
-			timeLeft += crateTimers.timeBonusYellow;
-			break;
-		case Crate.CrateState.Brown:
-			timeLeft += crateTimers.timeBonusBrown;
-			break;
-		case Crate.CrateState.Rotten:
-			timeLeft += crateTimers.timeBonusRotten;
-			break;
+		    case Crate.CrateState.Green:
+			    timeLeft += crateTimers.timeBonusGreen;
+			    break;
+		    case Crate.CrateState.Yellow:
+			    timeLeft += crateTimers.timeBonusYellow;
+			    break;
+		    case Crate.CrateState.Brown:
+			    timeLeft += crateTimers.timeBonusBrown;
+			    break;
+		    case Crate.CrateState.Rotten:
+			    timeLeft += crateTimers.timeBonusRotten;
+			    break;
 		}
 
 	}
@@ -271,13 +256,6 @@ public class GameController : Singleton<GameController> {
             else
             {
                 currentWaveFactor = 0.05f;
-            }
-
-
-            if (crateDeliveredTimeBonus > 2) {
-                crateDeliveredTimeBonus = crateDeliveredTimeBonus - Time.timeSinceLevelLoad * crateDeliveredTimeBonusDecrementFactor;
-            } else {
-                crateDeliveredTimeBonus = 2;
             }
 
             if (gameState == GameState.Running && timeLeft > 0) {
