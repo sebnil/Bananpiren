@@ -1,12 +1,12 @@
 [submodule "Assets/Secrets"]
 	path = Assets/Secrets
-	url = git@bitbucket.org:sebnil/shipper-secrets.git
+	url = https://sebnil@bitbucket.org/sebnil/shipper-secrets.git
 [submodule "Assets/Scripts/Singleton"]
 	path = Assets/Scripts/Singleton
-	url = git@github.com:sebnil/Singleton.git
+	url = https://github.com/sebnil/Singleton.git
 [submodule "Assets/SuperUnityBuild"]
 	path = Assets/SuperUnityBuild
-	url = git@github.com:sebnil/unity-build.git
+	url = https://github.com/sebnil/unity-build.git
 [submodule "Assets/SuperUnityBuildActions"]
 	path = Assets/SuperUnityBuildActions
-	url = git@github.com:sebnil/unity-build-actions.git
+	url = https://github.com/sebnil/unity-build-actions.git
