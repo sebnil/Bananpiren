@@ -1,12 +1,14 @@
 fileFormatVersion: 2
-guid: 251a78f25804cfe4fb11c9f7ce2c4ce2
-timeCreated: 1497344618
+guid: eb73fefa44c796247816735944299c84
+timeCreated: 1497457781
 licenseType: Free
 ShaderImporter:
   defaultTextures:
-  - _node_3715: {fileID: 2800000, guid: 5376858128ca00346a92dc002fee2ec5, type: 3}
-  - _node_6677: {fileID: 2800000, guid: 026a7ab06e1dcde4c8c995d3ff98f958, type: 3}
-  - _node_3228: {fileID: 2800000, guid: edbc3719f341f1f43a22d93a7bed0b19, type: 3}
+  - _Normal: {fileID: 2800000, guid: 5376858128ca00346a92dc002fee2ec5, type: 3}
+  - _Water: {fileID: 2800000, guid: 6b5e3cc64c3200340ba58ee9d95f558f, type: 3}
+  - _Foam: {fileID: 2800000, guid: 5a6ee3a80c784a344acd4454bf4a284e, type: 3}
+  - _Water_smallwaves: {fileID: 2800000, guid: 6b5e3cc64c3200340ba58ee9d95f558f, type: 3}
+  - _rain: {fileID: 2800000, guid: f5c0f2620ffe43a4ead7970b59746670, type: 3}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
