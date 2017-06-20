@@ -228,7 +228,7 @@ public class GameController : Singleton<GameController> {
                 if (timeLeft < 0) {
                     timeLeft = 0;
                 }
-            } else if (gameState == GameState.Running) {
+            } else if (!AppInfo.debugRelease && gameState == GameState.Running) {
                 GameOver();
             } else {
                 // do nothing
