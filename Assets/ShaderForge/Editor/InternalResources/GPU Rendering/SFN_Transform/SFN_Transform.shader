@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 Shader "Hidden/Shader Forge/SFN_Transform" {
     Properties {
         _OutputMask ("Output Mask", Vector) = (1,1,1,1)
@@ -78,7 +76,7 @@ Shader "Hidden/Shader Forge/SFN_Transform" {
                 	} else if(_ToSpace == 2){ 
                 		outputColor.xyz = mul( tangentTransform, mul( unity_ObjectToWorld, _in ).xyz );	// Local To Tangent
                 	} else if(_ToSpace == 3){ 
-                		outputColor = mul( UNITY_MATRIX_MV, _in );								// Local To View
+                		outputColor = UnityObjectToViewPos( _in ).xyzz;								// Local To View
                 	}
                 } else if( _FromSpace = 2 ){
                 	if(_ToSpace == 0){ 

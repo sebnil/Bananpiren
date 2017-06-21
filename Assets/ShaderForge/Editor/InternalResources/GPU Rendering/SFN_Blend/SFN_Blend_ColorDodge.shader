@@ -1,5 +1,3 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 Shader "Hidden/Shader Forge/SFN_Blend_ColorDodge" {
     Properties {
         _OutputMask ("Output Mask", Vector) = (1,1,1,1)

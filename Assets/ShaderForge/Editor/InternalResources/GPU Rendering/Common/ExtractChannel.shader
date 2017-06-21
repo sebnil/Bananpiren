@@ -1,6 +1,4 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader "Hidden/Shader Forge/ExtractChannel"
+﻿Shader "Hidden/Shader Forge/ExtractChannel"
 {
 	Properties {
 		_MainTex ("Texture", 2D) = "white" {}
