@@ -81,6 +81,17 @@ public class GameController : Singleton<GameController> {
     public RipenTimers ripenTimers;
     public float currentRipenFactor;
 
+    [System.Serializable]
+    public class WaveTimers
+    {
+        public float waveFactor2Threshold;
+        public float waveFactor2Factor;
+        public float waveFactor3Threshold;
+        public float waveFactor3Factor;
+    }
+    public WaveTimers waveTimers;
+    public float currentWaveFactor;
+
     Ray ray;
     RaycastHit hit;
     public GameObject cratePrefab;
@@ -95,6 +106,13 @@ public class GameController : Singleton<GameController> {
     void Start () {
 		craneScript = craneObject.GetComponent<Crane>();
         musicSource = GetComponent<AudioSource>();
+
+        // force landscape on mobile
+        /*Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
+        Screen.orientation = ScreenOrientation.AutoRotation;*/
 
         // start countdown timer
         StartCoroutine("GameOverTimer");
@@ -223,12 +241,26 @@ public class GameController : Singleton<GameController> {
                 currentRipenFactor = 1;
             }
 
+            // update wave timers
+            if (totalTime >= waveTimers.waveFactor3Threshold)
+            {
+                currentWaveFactor = waveTimers.waveFactor3Factor;
+            }
+            else if (totalTime >= waveTimers.waveFactor2Threshold)
+            {
+                currentWaveFactor = waveTimers.waveFactor2Factor;
+            }
+            else
+            {
+                currentWaveFactor = 0.05f;
+            }
+
             if (gameState == GameState.Running && timeLeft > 0) {
                 timeLeft--;
                 if (timeLeft < 0) {
                     timeLeft = 0;
                 }
-            } else if (!AppInfo.debugRelease && gameState == GameState.Running) {
+            } else if (gameState == GameState.Running) {
                 GameOver();
             } else {
                 // do nothing

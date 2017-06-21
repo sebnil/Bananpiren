@@ -33,7 +33,7 @@ public class HUDController : MonoBehaviour {
         progressText.text = GameController.Instance.numberOfCratesDelivered.ToString();
         timeLeftText.text = Mathf.Floor(GameController.Instance.timeLeft).ToString();
         ripenFactorText.text = "Ripen x" + GameController.Instance.currentRipenFactor;
-        wavesFactorText.text = "Waves x" + WeatherController.Instance.currentWaveFactor * 10f;
+        wavesFactorText.text = "Waves x" + GameController.Instance.currentWaveFactor * 10f;
 
         debugText.text = "\nver " + BuildConstants.version;
 
@@ -46,7 +46,7 @@ public class HUDController : MonoBehaviour {
         scale = stepAnimationTimer(ref ripenFactorAnimationTimer, 2, 1, animationRate, ripenFactorChanged());
         ripenFactorTransform.localScale = new Vector3(scale, scale, 1);
 
-        scale = stepAnimationTimer(ref wavesFactorAnimationTimer, 2, 1, animationRate, WeatherController.Instance.WavesFactorChanged());
+        scale = stepAnimationTimer(ref wavesFactorAnimationTimer, 2, 1, animationRate, wavesFactorChanged());
         wavesFactorTransform.localScale = new Vector3(scale, scale, 1);
 
         // warn the gamer that time is almost up
@@ -102,6 +102,18 @@ public class HUDController : MonoBehaviour {
             value = true;
         }
         ripenFactor = GameController.Instance.currentRipenFactor;
+        return value;
+    }
+
+    float? wavesFactor = null;
+    bool wavesFactorChanged()
+    {
+        bool value = false;
+        if (GameController.Instance.currentWaveFactor != wavesFactor && wavesFactor != null)
+        {
+            value = true;
+        }
+        wavesFactor = GameController.Instance.currentWaveFactor;
         return value;
     }
 }
