@@ -7,14 +7,18 @@ public class Crate : MonoBehaviour
 	private Transform tr;
 	private Renderer renderer;
 
+
 	private PlayerController playerController;
 	public Rigidbody boatRigidBody;
 
+    public float relativeVelocityMagnitude;
+
 	public bool onCrane = false;
 
+    public bool inFasteningZone = false;
 	public bool onBoat = false;
 	public bool inCargoZone = false;
-	public float relativeVelocityMagnitude;
+    public bool fixedJointCreated = false;
 
 	public float timeRemaining;
 
@@ -55,6 +59,9 @@ Green,
     public GameObject bananaSwitchesStateParticleSystem;
     private Color brownColor = new Color(170/255f, 104/255f, 49/255f, 1);
 
+    CiclularProgress cicularProgress;
+    FixedJoint crateFixedJointToBoat;
+
     // Use this for initialization
     void Start ()
 	{
@@ -62,12 +69,17 @@ Green,
 		tr = GetComponent<Transform> ();
 		renderer = GetComponent<Renderer> ();
 		audioSource = GetComponent<AudioSource> ();
+        crateFixedJointToBoat = GetComponent<FixedJoint>();
 
 		boatRigidBody = GameObject.FindWithTag ("Player").GetComponent<Rigidbody> ();
 		playerController = GameObject.FindWithTag ("Player").GetComponent<PlayerController> ();
 
 		timeRemaining = GameController.Instance.crateTimers.timerStart;
 		InvokeRepeating ("decreaseTimeRemaining", 1.0f, 1.0f);
+
+        //GameObject progressBar = gameObject.transform.Find("ProgressBar");
+        cicularProgress = gameObject.transform.Find("ProgressBar").Find("Progress").GetComponent<CiclularProgress>();
+        cicularProgress.PercentDone = 0;
 	}
 	
 	// Update is called once per frame
@@ -127,11 +139,38 @@ Green,
 		}
 	}
 
-	void OnTriggerEnter (Collider other)
+    private void FixedUpdate()
+    {
+		Vector3 pos = tr.transform.position;
+		Vector3 vel = rb.velocity;
+		Vector3 boatVelocity = boatRigidBody.velocity;
+        relativeVelocityMagnitude = (vel - boatVelocity).magnitude;
+
+        if (!fixedJointCreated && inFasteningZone && relativeVelocityMagnitude < 3f)
+		{
+            cicularProgress.PercentDone = Mathf.Clamp(cicularProgress.PercentDone + Time.fixedDeltaTime * 0.5f, 0, 1);
+		}
+        else if (!fixedJointCreated)
+        {
+            cicularProgress.PercentDone = 0;
+        }
+
+        if (cicularProgress.PercentDone >= 1f && !fixedJointCreated)
+        {
+			gameObject.AddComponent<FixedJoint>();
+            gameObject.GetComponent<FixedJoint>().connectedBody = boatRigidBody;
+            fixedJointCreated = true;
+        }
+    }
+
+    void OnTriggerEnter (Collider other)
 	{
-		if (other.tag == "CargoTriggerBox") {
+		if (other.tag == "CargoTriggerBox") 
+        {
 			inCargoZone = true;
-		} else if (other.tag == "WaterPlane" && !onBoat && !inCargoZone) {
+		} 
+        else if (other.tag == "WaterPlane" && !onBoat && !inCargoZone) 
+        {
 			Instantiate (splashPrefab, new Vector3 (transform.position.x, -1, transform.position.z), Quaternion.identity);
 			Instantiate (surfaceSplashPrefab, new Vector3 (transform.position.x, 0, transform.position.z), Quaternion.identity);
 
@@ -152,12 +191,23 @@ Green,
 			showDroppedCrateText (transform.position, transform.rotation);
 
 		}
+
+        if (other.tag == "CargoThatCanBeFastenedTriggerBox")
+        {
+            inFasteningZone = true;
+
+        }
 	}
 
 	void OnTriggerExit (Collider other)
 	{
 		if (other.tag == "CargoTriggerBox") {
 			inCargoZone = false;
+		}
+
+		if (other.tag == "CargoThatCanBeFastenedTriggerBox")
+		{
+            inFasteningZone = false;
 		}
 	}
 
@@ -173,10 +223,6 @@ Green,
 
 	private bool OnBoat ()
 	{
-		Vector3 pos = tr.transform.position;
-		Vector3 vel = rb.velocity;
-		Vector3 boatVelocity = boatRigidBody.velocity;
-		relativeVelocityMagnitude = (vel - boatVelocity).magnitude;
 
 		if (!inCargoZone) {
 			// not in cargo zone
