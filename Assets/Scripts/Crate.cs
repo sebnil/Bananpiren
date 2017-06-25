@@ -7,11 +7,13 @@ public class Crate : MonoBehaviour
 	private Transform tr;
 	private Renderer renderer;
 
+
 	private PlayerController playerController;
 	public Rigidbody boatRigidBody;
 
 	public bool onCrane = false;
 
+    public bool startFastening = false;
 	public bool onBoat = false;
 	public bool inCargoZone = false;
 	public float relativeVelocityMagnitude;
@@ -68,6 +70,10 @@ Green,
 
 		timeRemaining = GameController.Instance.crateTimers.timerStart;
 		InvokeRepeating ("decreaseTimeRemaining", 1.0f, 1.0f);
+
+        //GameObject progressBar = gameObject.transform.Find("ProgressBar");
+        CiclularProgress cicularProgress = gameObject.transform.Find("ProgressBar").Find("Progress").GetComponent<CiclularProgress>();
+        cicularProgress.PercentDone = 90;
 	}
 	
 	// Update is called once per frame
@@ -152,12 +158,23 @@ Green,
 			showDroppedCrateText (transform.position, transform.rotation);
 
 		}
+
+        if (other.tag == "CargoThatCanBeFastenedTriggerBox")
+        {
+            startFastening = true;
+
+        }
 	}
 
 	void OnTriggerExit (Collider other)
 	{
 		if (other.tag == "CargoTriggerBox") {
 			inCargoZone = false;
+		}
+
+		if (other.tag == "CargoThatCanBeFastenedTriggerBox")
+		{
+            startFastening = false;
 		}
 	}
 
