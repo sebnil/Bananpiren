@@ -146,11 +146,11 @@ Green,
 		Vector3 boatVelocity = boatRigidBody.velocity;
         relativeVelocityMagnitude = (vel - boatVelocity).magnitude;
 
-        if (inFasteningZone && relativeVelocityMagnitude < 3f)
+        if (!fixedJointCreated && inFasteningZone && relativeVelocityMagnitude < 3f)
 		{
             cicularProgress.PercentDone = Mathf.Clamp(cicularProgress.PercentDone + Time.fixedDeltaTime * 0.5f, 0, 1);
 		}
-        else
+        else if (!fixedJointCreated)
         {
             cicularProgress.PercentDone = 0;
         }
