@@ -148,14 +148,14 @@ Green,
 
         if (inFasteningZone && relativeVelocityMagnitude < 3f)
 		{
-            cicularProgress.PercentDone = Mathf.Clamp(cicularProgress.PercentDone + Time.fixedDeltaTime * 0.5f, 0, 100);
+            cicularProgress.PercentDone = Mathf.Clamp(cicularProgress.PercentDone + Time.fixedDeltaTime * 0.5f, 0, 1);
 		}
         else
         {
             cicularProgress.PercentDone = 0;
         }
 
-        if (cicularProgress.PercentDone >= 100 && !fixedJointCreated)
+        if (cicularProgress.PercentDone >= 1f && !fixedJointCreated)
         {
 			gameObject.AddComponent<FixedJoint>();
             gameObject.GetComponent<FixedJoint>().connectedBody = boatRigidBody;
