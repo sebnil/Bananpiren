@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a943bb58f4828394a917303f6281fc6a
-timeCreated: 1498051654
+timeCreated: 1498490570
 licenseType: Free
 ShaderImporter:
   defaultTextures:
@@ -12,6 +12,7 @@ ShaderImporter:
   - _Rain_2_normal: {fileID: 2800000, guid: cb21ea4bc392e044d8d5ad93a9ffa91e, type: 3}
   - _Water_bigwaves_Normal: {fileID: 2800000, guid: 5376858128ca00346a92dc002fee2ec5,
       type: 3}
+  - _Wavesnormal: {fileID: 2800000, guid: a1789a6d4899e9d449c1dc16c0013d57, type: 3}
   - _Foam_copy: {fileID: 2800000, guid: 5a6ee3a80c784a344acd4454bf4a284e, type: 3}
   - _Foam_copy_copy: {fileID: 2800000, guid: 5a6ee3a80c784a344acd4454bf4a284e, type: 3}
   - _Water_smallwaves_Normal_copy: {fileID: 2800000, guid: 5376858128ca00346a92dc002fee2ec5,
