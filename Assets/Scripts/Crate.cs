@@ -56,6 +56,8 @@ Green,
 	public float crateHitBoatSoundVelocityThreshold;
 	public float[] crateSplashSoundVelocityThreshold;
 
+	GameObject fastenerCosmetics;
+
     public GameObject bananaSwitchesStateParticleSystem;
     private Color brownColor = new Color(170/255f, 104/255f, 49/255f, 1);
 
@@ -71,6 +73,7 @@ Green,
 		audioSource = GetComponent<AudioSource> ();
         crateFixedJointToBoat = GetComponent<SpringJoint>();
 
+		fastenerCosmetics = gameObject.transform.Find ("CrateFastenerCosmetics").gameObject;
 		boatRigidBody = GameObject.FindWithTag ("Player").GetComponent<Rigidbody> ();
 		playerController = GameObject.FindWithTag ("Player").GetComponent<PlayerController> ();
 
@@ -167,6 +170,7 @@ Green,
 			gameObject.GetComponent<SpringJoint> ().spring = 100;
 			gameObject.GetComponent<SpringJoint> ().breakForce = 30;
             fixedJointCreated = true;
+			fastenerCosmetics.gameObject.SetActive (true);
         }
     }
 
@@ -175,6 +179,7 @@ Green,
 		Debug.Log("A joint has just been broken!, force: " + breakForce);
 		fixedJointCreated = false;
 		cicularProgress.PercentDone = 0f;
+		fastenerCosmetics.gameObject.SetActive (false);
 	}
 
     void OnTriggerEnter (Collider other)
