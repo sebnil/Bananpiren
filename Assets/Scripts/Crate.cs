@@ -212,9 +212,9 @@ Green,
 			} else {
 				// play no sound
 			}
-
-			double ySpeed = rb.velocity.y * 0.1f;
-			rb.velocity = new Vector3 (rb.velocity.x, (float)ySpeed, rb.velocity.z);
+				
+			// slow down crate on impact
+			rb.velocity = new Vector3 ((float)(rb.velocity.x * 0.1), (float)(rb.velocity.y * 0.1f), rb.velocity.z);
 
 			GameController.Instance.PunishForDroppedCrate ();
 			showDroppedCrateText (transform.position, transform.rotation);
