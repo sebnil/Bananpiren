@@ -18,6 +18,8 @@ public class Crate : MonoBehaviour
     public bool inFasteningZone = false;
 	public bool onBoat = false;
 	public bool inCargoZone = false;
+	public bool inUnloadZone = false;
+
     public bool fixedJointCreated = false;
 
 	public float timeRemaining;
@@ -96,53 +98,60 @@ Green,
 		if (onBoat) {
 
 			if (playerController.isInUnloadingZone) {
-				GameController.Instance.IncrementNumberOfCratesDelivered (crateState);
-
-                // create time bonus text
-				GameObject crateDeliveredTextInstance = Instantiate (crateDeliveredTextPrefab, transform.position, transform.rotation) as GameObject;
-				TextMesh t = crateDeliveredTextInstance.GetComponent<TextMesh> ();
-                float currentTimeBonus = getCurrentTimeBonus();
-
-                // set text
-                if (currentTimeBonus > 0) {
-                    t.text = "+" + getCurrentTimeBonus();
-                }
-                else
-                {
-                    t.text = "-" + getCurrentTimeBonus();
-                }
-
-                // set color and size of text
-                switch (crateState)
-                {
-                    case CrateState.Green:
-                        t.fontSize = 19;
-                        t.color = Color.green;
-                        break;
-                    case CrateState.Yellow:
-                        t.fontSize = 50;
-                        t.color = Color.yellow;
-                        break;
-                    case CrateState.Brown:
-                        t.fontSize = 19;
-                        t.color = new Color32(0x77, 0x37, 0x11, 0xFF);
-                        break;
-                    case CrateState.Rotten:
-                        t.fontSize = 19;
-                        t.color = Color.red;
-                        break;
-                    default:
-                        t.fontSize = 1;
-                        t.color = Color.red;
-                        break;
-                }
-
-                // destroy this crate
-                Destroy(this.gameObject);
+				deliverCrateToDock ();
             }
-		} else {
-			// do nothing
+		} 
+		else if (inUnloadZone) 
+		{
+			deliverCrateToDock ();
 		}
+	}
+
+	private void deliverCrateToDock()
+	{
+		GameController.Instance.IncrementNumberOfCratesDelivered (crateState);
+
+		// create time bonus text
+		GameObject crateDeliveredTextInstance = Instantiate (crateDeliveredTextPrefab, transform.position, transform.rotation) as GameObject;
+		TextMesh t = crateDeliveredTextInstance.GetComponent<TextMesh> ();
+		float currentTimeBonus = getCurrentTimeBonus();
+
+		// set text
+		if (currentTimeBonus > 0) {
+			t.text = "+" + getCurrentTimeBonus();
+		}
+		else
+		{
+			t.text = "-" + getCurrentTimeBonus();
+		}
+
+		// set color and size of text
+		switch (crateState)
+		{
+		case CrateState.Green:
+			t.fontSize = 19;
+			t.color = Color.green;
+			break;
+		case CrateState.Yellow:
+			t.fontSize = 50;
+			t.color = Color.yellow;
+			break;
+		case CrateState.Brown:
+			t.fontSize = 19;
+			t.color = new Color32(0x77, 0x37, 0x11, 0xFF);
+			break;
+		case CrateState.Rotten:
+			t.fontSize = 19;
+			t.color = Color.red;
+			break;
+		default:
+			t.fontSize = 1;
+			t.color = Color.red;
+			break;
+		}
+
+		// destroy this crate
+		Destroy(this.gameObject);
 	}
 
     private void FixedUpdate()
@@ -214,8 +223,12 @@ Green,
         if (other.tag == "CargoThatCanBeFastenedTriggerBox")
         {
             inFasteningZone = true;
-
         }
+
+		if (other.tag.Contains ("UnloadTriggerBox")) 
+		{
+			inUnloadZone = true;
+		}
 	}
 
 	void OnTriggerExit (Collider other)
