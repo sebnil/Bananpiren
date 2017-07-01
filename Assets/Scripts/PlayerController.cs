@@ -13,9 +13,14 @@ public class PlayerController : MonoBehaviour {
 
     float moveHorizontal;
 
+	AudioSource audioSource;
+	public float SoundVelocityThreshold;
+	public AudioClip[] CrateHitBoatSounds;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
+		audioSource = GetComponent<AudioSource> ();
     }
 	
 	// Update is called once per frame
@@ -52,7 +57,21 @@ public class PlayerController : MonoBehaviour {
         {
             boatWakeParticles.emit = false;
         }
+
+		// sound
+		float pitch = Mathf.Clamp(Mathf.Abs (rb.velocity.x) * 0.2f, 1, 1.5f);
+		audioSource.pitch = pitch;
     }
+
+	void OnCollisionEnter (Collision collision)
+	{
+
+		//Debug.Log ("crate with something hard with rel vel: " + collision.relativeVelocity.magnitude);
+		if (collision.relativeVelocity.magnitude > SoundVelocityThreshold) {
+			audioSource.PlayOneShot (CrateHitBoatSounds [Random.Range ((int)0, (int)CrateHitBoatSounds.Length)]);
+		}
+
+	}
 
 	void OnTriggerEnter(Collider other)
 	{
