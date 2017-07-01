@@ -11,17 +11,38 @@ public class WaveGenerator : MonoBehaviour {
     public float waveDistance;
     public float waveScale;
 
+	Renderer renderer;
+
 
     // Use this for initialization
     void Start () {
         mesh = GetComponent<MeshFilter>().mesh;
         randomTimes = new float[mesh.vertices.Length];
+
+		renderer = GetComponent<Renderer>();
+		renderer.material.SetFloat("_Rainswitch", 1);
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
         waveScale = WeatherController.Instance.currentWaveFactor;
+
+		switch (WeatherController.Instance.RainOnWaterIntensity) 
+		{
+		case WeatherController.RainIntensity.HeavyRain:
+			renderer.material.SetFloat("_Rainnormal", 0f);
+			renderer.material.SetFloat("_Rainswitch", 1f);
+			break;
+		case WeatherController.RainIntensity.SomeRain:
+			renderer.material.SetFloat("_Rainnormal", 1f);
+			renderer.material.SetFloat("_Rainswitch", 0f);
+			break;
+		default:
+			renderer.material.SetFloat("_Rainnormal", 0f);
+			renderer.material.SetFloat("_Rainswitch", 0f);
+			break;
+		}
 
         //mesh = GetComponent<MeshFilter>().mesh;
         Vector3[] vertices = mesh.vertices;
