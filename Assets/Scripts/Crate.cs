@@ -60,7 +60,7 @@ Green,
     private Color brownColor = new Color(170/255f, 104/255f, 49/255f, 1);
 
     CiclularProgress cicularProgress;
-    FixedJoint crateFixedJointToBoat;
+    SpringJoint crateFixedJointToBoat;
 
     // Use this for initialization
     void Start ()
@@ -69,7 +69,7 @@ Green,
 		tr = GetComponent<Transform> ();
 		renderer = GetComponent<Renderer> ();
 		audioSource = GetComponent<AudioSource> ();
-        crateFixedJointToBoat = GetComponent<FixedJoint>();
+        crateFixedJointToBoat = GetComponent<SpringJoint>();
 
 		boatRigidBody = GameObject.FindWithTag ("Player").GetComponent<Rigidbody> ();
 		playerController = GameObject.FindWithTag ("Player").GetComponent<PlayerController> ();
@@ -80,6 +80,9 @@ Green,
         //GameObject progressBar = gameObject.transform.Find("ProgressBar");
         cicularProgress = gameObject.transform.Find("ProgressBar").Find("Progress").GetComponent<CiclularProgress>();
         cicularProgress.PercentDone = 0;
+
+		// set low center of mass to avoid boxes rolling
+		//rb.centerOfMass = new Vector3(0f, -0.0f, 0f);
 	}
 	
 	// Update is called once per frame
@@ -154,14 +157,25 @@ Green,
         {
             cicularProgress.PercentDone = 0;
         }
-
+			
         if (cicularProgress.PercentDone >= 1f && !fixedJointCreated)
         {
-			gameObject.AddComponent<FixedJoint>();
-            gameObject.GetComponent<FixedJoint>().connectedBody = boatRigidBody;
+			gameObject.AddComponent<SpringJoint>();
+			gameObject.GetComponent<SpringJoint>().connectedBody = boatRigidBody;
+			gameObject.GetComponent<SpringJoint> ().enableCollision = true;
+			gameObject.GetComponent<SpringJoint> ().damper = 10;
+			gameObject.GetComponent<SpringJoint> ().spring = 100;
+			gameObject.GetComponent<SpringJoint> ().breakForce = 30;
             fixedJointCreated = true;
         }
     }
+
+	void OnJointBreak(float breakForce)
+	{
+		Debug.Log("A joint has just been broken!, force: " + breakForce);
+		fixedJointCreated = false;
+		cicularProgress.PercentDone = 0f;
+	}
 
     void OnTriggerEnter (Collider other)
 	{
