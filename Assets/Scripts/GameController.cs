@@ -183,6 +183,7 @@ public class GameController : Singleton<GameController> {
 			gameOverPanel.SetActive(true);
 			//gameState = GameState.Paused;
 			Time.timeScale = 0f;
+			AudioListener.volume = 0;
 		}
 		else if (gameState == GameState.Paused)
         {   
@@ -190,6 +191,7 @@ public class GameController : Singleton<GameController> {
             gamePanel.SetActive(false);
 			gameState = GameState.Running;
             Time.timeScale = 1.0f;
+			AudioListener.volume = 1;
         }
         else
         {
@@ -197,6 +199,7 @@ public class GameController : Singleton<GameController> {
             gamePanel.SetActive(true);
 			gameState = GameState.Paused;
             Time.timeScale = 0f;
+			AudioListener.volume = 0;
         }
 
         // update music state
