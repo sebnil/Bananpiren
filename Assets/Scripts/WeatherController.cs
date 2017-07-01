@@ -73,7 +73,7 @@ public class WeatherController : Singleton<WeatherController>
         WaveTimerThresholds.Add(new WaveTimerThreshold(5,   0.1f,   0,    0,   0,    2));
         WaveTimerThresholds.Add(new WaveTimerThreshold(10,  0.2f,   50,   10,  0,    0));
         WaveTimerThresholds.Add(new WaveTimerThreshold(15,  0.4f,   100,  50,  20,   0));
-        WaveTimerThresholds.Add(new WaveTimerThreshold(20,  0.4f,   200,  80,  100,  0));
+        WaveTimerThresholds.Add(new WaveTimerThreshold(20,  0.5f,   200,  80,  100,  0));
         WaveTimerThresholds.Add(new WaveTimerThreshold(25,  0.2f,   50,   10,  10,   50));
         WaveTimerThresholds.Add(new WaveTimerThreshold(30,  0.2f,   0,    0,   0,    10));
 		resetTimerAt = 35;
