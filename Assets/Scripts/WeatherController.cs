@@ -32,15 +32,17 @@ public class WeatherController : Singleton<WeatherController>
         public float WaveFactor;
         public float RainOnScreenParticleSystemEmission;
         public float RainInGameParticleSystemSystemEmission;
+		public RainIntensity RainOnWaterIntensity;
         public float FogParticleSystemEmission;
         public float SunshineParticleSystemEmission;
 
-        public WaveTimerThreshold(float TimeThreshold, float WaveFactor, float RainOnScreenParticleSystemEmission, float RainInGameParticleSystemSystemEmission, float FogParticleSystemEmission, float SunshineParticleSystemEmission)
+		public WaveTimerThreshold(float TimeThreshold, float WaveFactor, float RainOnScreenParticleSystemEmission, float RainInGameParticleSystemSystemEmission, RainIntensity rainOnWaterIntensity, float FogParticleSystemEmission, float SunshineParticleSystemEmission)
         {
             this.TimeThreshold = TimeThreshold;
             this.WaveFactor = WaveFactor;
             this.RainOnScreenParticleSystemEmission = RainOnScreenParticleSystemEmission;
             this.RainInGameParticleSystemSystemEmission = RainInGameParticleSystemSystemEmission;
+			this.RainOnWaterIntensity = rainOnWaterIntensity;
             this.FogParticleSystemEmission = FogParticleSystemEmission;
             this.SunshineParticleSystemEmission = SunshineParticleSystemEmission;
         }
@@ -50,17 +52,26 @@ public class WeatherController : Singleton<WeatherController>
 
     public float currentWaveFactor = 0.05f;
 
+	public enum RainIntensity {
+		NoRain,
+		SomeRain,
+		HeavyRain
+	}
+
+
     public float totalTime;
 
     public ParticleSystem RainOnScreenParticleSystem;
     public ParticleSystem RainInGameParticleSystem1;
     public ParticleSystem RainInGameParticleSystem2;
+	public RainIntensity RainOnWaterIntensity= RainIntensity.NoRain;
     public ParticleSystem FogParticleSystem;
     public ParticleSystem SunshineParticleSystem;
     
 
     // Use this for initialization
     void Start () {
+		//RainOnWaterIntensity = RainIntensity.NoRain;
 
         // fill in matrix for weather scheduling
         // time is seconds when weather should activate (which is quite low now for testing purposes)
@@ -68,14 +79,14 @@ public class WeatherController : Singleton<WeatherController>
         // rS is rain on screen
         // fog is fog
         // sun is sunshine
-        //                                            time, wave,   rain  rS   fog   sun
-        WaveTimerThresholds.Add(new WaveTimerThreshold(2,   0,      0,    0,   0,    5));
-        WaveTimerThresholds.Add(new WaveTimerThreshold(5,   0.1f,   0,    0,   0,    2));
-        WaveTimerThresholds.Add(new WaveTimerThreshold(10,  0.2f,   50,   10,  0,    0));
-        WaveTimerThresholds.Add(new WaveTimerThreshold(15,  0.4f,   100,  50,  20,   0));
-        WaveTimerThresholds.Add(new WaveTimerThreshold(20,  0.5f,   200,  80,  100,  0));
-        WaveTimerThresholds.Add(new WaveTimerThreshold(25,  0.2f,   50,   10,  10,   50));
-        WaveTimerThresholds.Add(new WaveTimerThreshold(30,  0.2f,   0,    0,   0,    10));
+        //                                            time, wave,   rain  rS   rain on water            fog   sun
+		WaveTimerThresholds.Add(new WaveTimerThreshold(2,   0,      0,    0,   RainIntensity.NoRain,    0,    5));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(5,   0.1f,   0,    0,   RainIntensity.NoRain,    0,    2));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(10,  0.2f,   50,   10,  RainIntensity.SomeRain,  0,    0));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(15,  0.4f,   100,  50,  RainIntensity.HeavyRain, 20,   0));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(20,  0.5f,   200,  80,  RainIntensity.HeavyRain, 100,  0));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(25,  0.2f,   50,   10,  RainIntensity.SomeRain,  10,   50));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(30,  0.2f,   0,    0,   RainIntensity.NoRain,    0,    10));
 		resetTimerAt = 35;
 
         // start countdown timer
@@ -118,6 +129,8 @@ public class WeatherController : Singleton<WeatherController>
 
                 em = RainOnScreenParticleSystem.emission;
                 em.rateOverTime = WaveTimerThresholds[(int)waveTimerIndex].RainOnScreenParticleSystemEmission;
+
+				RainOnWaterIntensity = WaveTimerThresholds[(int)waveTimerIndex].RainOnWaterIntensity;
 
                 em = FogParticleSystem.emission;
                 em.rateOverTime = WaveTimerThresholds[(int)waveTimerIndex].FogParticleSystemEmission;
