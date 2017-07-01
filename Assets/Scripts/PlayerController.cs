@@ -13,9 +13,14 @@ public class PlayerController : MonoBehaviour {
 
     float moveHorizontal;
 
+	AudioSource audioSource;
+	public AudioClip[] boatSound;
+	public float[] boatSoundThresholds;
+
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
+		audioSource = GetComponent<AudioSource> ();
     }
 	
 	// Update is called once per frame
@@ -52,6 +57,29 @@ public class PlayerController : MonoBehaviour {
         {
             boatWakeParticles.emit = false;
         }
+
+		// sound
+		/*if (Mathf.Abs(rb.velocity.x) > boatSoundThresholds [0]) 
+		{
+			audioSource.clip = boatSound [0];
+			audioSource.mute = false;
+		} 
+		else if (Mathf.Abs(rb.velocity.x) > boatSoundThresholds [1]) 
+		{
+			audioSource.clip = boatSound [1];
+			audioSource.mute = false;
+		} 
+		else 
+		{
+			//audioSource.mute = true;
+		}*/
+
+		float pitch = Mathf.Clamp(Mathf.Abs (rb.velocity.x) * 0.2f, 1, 2);
+		audioSource.pitch = pitch;
+
+		if (!audioSource.isPlaying) {
+			audioSource.Play ();
+		}
     }
 
 	void OnTriggerEnter(Collider other)
