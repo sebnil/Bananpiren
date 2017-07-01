@@ -46,6 +46,7 @@ public class WeatherController : Singleton<WeatherController>
         }
     };
     private List<WaveTimerThreshold> WaveTimerThresholds = new List<WaveTimerThreshold>();
+	private float resetTimerAt;
 
     public float currentWaveFactor = 0.05f;
 
@@ -75,6 +76,7 @@ public class WeatherController : Singleton<WeatherController>
         WaveTimerThresholds.Add(new WaveTimerThreshold(20,  0.4f,   200,  80,  100,  0));
         WaveTimerThresholds.Add(new WaveTimerThreshold(25,  0.2f,   50,   10,  10,   50));
         WaveTimerThresholds.Add(new WaveTimerThreshold(30,  0.2f,   0,    0,   0,    10));
+		resetTimerAt = 35;
 
         // start countdown timer
         StartCoroutine("Ticker");
@@ -86,6 +88,9 @@ public class WeatherController : Singleton<WeatherController>
         {
             yield return new WaitForSeconds(1f);
             totalTime++;
+			if (totalTime > resetTimerAt) {
+				totalTime = 0;
+			}
 
             // update wave timers
             int? waveTimerIndex = null;
@@ -119,6 +124,7 @@ public class WeatherController : Singleton<WeatherController>
 
                 em = SunshineParticleSystem.emission;
                 em.rateOverTime = WaveTimerThresholds[(int)waveTimerIndex].SunshineParticleSystemEmission;
+
             }
         }
     }
