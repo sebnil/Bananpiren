@@ -197,7 +197,8 @@ Green,
         {
 			inCargoZone = true;
 		} 
-        else if (other.tag == "WaterPlane" && !onBoat && !inCargoZone) 
+        
+		if (other.tag.Contains("WaterPlane") && !onBoat && !inCargoZone) 
         {
 			Instantiate (splashPrefab, new Vector3 (transform.position.x, -1, transform.position.z), Quaternion.identity);
 			Instantiate (surfaceSplashPrefab, new Vector3 (transform.position.x, 0, transform.position.z), Quaternion.identity);
