@@ -101,6 +101,8 @@ public class GameController : Singleton<GameController> {
 
         // update music state
         StartOrStopMusic();
+
+		AudioListener.volume = 1;
     }
 	
 	// Update is called once per frame
