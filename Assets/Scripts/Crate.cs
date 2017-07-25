@@ -35,7 +35,10 @@ public class Crate : MonoBehaviour
 
 	public CrateMaterials crateMaterials;
 
-	public enum CrateState
+    float fastenerPercentDone = 0f;
+
+
+    public enum CrateState
 	{
 Green,
 		Yellow,
@@ -63,7 +66,6 @@ Green,
     public GameObject bananaSwitchesStateParticleSystem;
     private Color brownColor = new Color(170/255f, 104/255f, 49/255f, 1);
 
-    CiclularProgress cicularProgress;
     SpringJoint crateFixedJointToBoat;
 
     // Use this for initialization
@@ -81,10 +83,6 @@ Green,
 
 		timeRemaining = GameController.Instance.crateTimers.timerStart;
 		InvokeRepeating ("decreaseTimeRemaining", 1.0f, 1.0f);
-
-        //GameObject progressBar = gameObject.transform.Find("ProgressBar");
-        cicularProgress = gameObject.transform.Find("ProgressBar").Find("Progress").GetComponent<CiclularProgress>();
-        cicularProgress.PercentDone = 0;
 
 		// set low center of mass to avoid boxes rolling
 		//rb.centerOfMass = new Vector3(0f, -0.0f, 0f);
@@ -161,16 +159,17 @@ Green,
 		Vector3 boatVelocity = boatRigidBody.velocity;
         relativeVelocityMagnitude = (vel - boatVelocity).magnitude;
 
+        // fastener progress
         if (!fixedJointCreated && inFasteningZone && relativeVelocityMagnitude < 3f)
 		{
-            cicularProgress.PercentDone = Mathf.Clamp(cicularProgress.PercentDone + Time.fixedDeltaTime * 0.5f, 0, 1);
+            fastenerPercentDone = Mathf.Clamp(fastenerPercentDone + Time.fixedDeltaTime * 0.5f, 0, 1);
 		}
         else if (!fixedJointCreated)
         {
-            cicularProgress.PercentDone = 0;
+            fastenerPercentDone = 0;
         }
 			
-        if (cicularProgress.PercentDone >= 1f && !fixedJointCreated)
+        if (fastenerPercentDone >= 1f && !fixedJointCreated)
         {
 			gameObject.AddComponent<SpringJoint>();
 			gameObject.GetComponent<SpringJoint>().connectedBody = boatRigidBody;
@@ -187,7 +186,7 @@ Green,
 	{
 		Debug.Log("A joint has just been broken!, force: " + breakForce);
 		fixedJointCreated = false;
-		cicularProgress.PercentDone = 0f;
+        fastenerPercentDone = 0f;
 		fastenerCosmetics.gameObject.SetActive (false);
 	}
 
