@@ -48,7 +48,7 @@ public class WeatherController : Singleton<WeatherController>
         }
     };
     private List<WaveTimerThreshold> WaveTimerThresholds = new List<WaveTimerThreshold>();
-	private float resetTimerAt;
+	private float? resetTimerAt;
 
     public float currentWaveFactor = 0.05f;
 
@@ -80,14 +80,21 @@ public class WeatherController : Singleton<WeatherController>
         // fog is fog
         // sun is sunshine
         //                                            time, wave,   rain  rS   rain on water            fog   sun
-		WaveTimerThresholds.Add(new WaveTimerThreshold(2,   0,      0,    0,   RainIntensity.NoRain,    0,    5));
-		WaveTimerThresholds.Add(new WaveTimerThreshold(5,   0.1f,   0,    0,   RainIntensity.NoRain,    0,    2));
-		WaveTimerThresholds.Add(new WaveTimerThreshold(10,  0.2f,   50,   10,  RainIntensity.SomeRain,  0,    0));
-		WaveTimerThresholds.Add(new WaveTimerThreshold(15,  0.4f,   100,  50,  RainIntensity.HeavyRain, 20,   0));
-		WaveTimerThresholds.Add(new WaveTimerThreshold(20,  0.5f,   200,  80,  RainIntensity.HeavyRain, 100,  0));
-		WaveTimerThresholds.Add(new WaveTimerThreshold(25,  0.2f,   50,   10,  RainIntensity.SomeRain,  10,   50));
-		WaveTimerThresholds.Add(new WaveTimerThreshold(30,  0.2f,   0,    0,   RainIntensity.NoRain,    0,    10));
-		resetTimerAt = 35;
+		WaveTimerThresholds.Add(new WaveTimerThreshold(0,   0.05f,  0,    0,   RainIntensity.NoRain,    0,    5));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(30,  0.1f,   0,    0,   RainIntensity.NoRain,    0,    2));
+        // ramp up waves
+		WaveTimerThresholds.Add(new WaveTimerThreshold(45,  0.2f,   50,   10,  RainIntensity.SomeRain,  0,    0));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(65,  0.4f,   100,  50,  RainIntensity.HeavyRain, 20,   0));
+		WaveTimerThresholds.Add(new WaveTimerThreshold(80,  0.5f,   200,  80,  RainIntensity.HeavyRain, 100,  0));
+        // ramp down waves
+        WaveTimerThresholds.Add(new WaveTimerThreshold(100,  0.2f,   50,   10,  RainIntensity.SomeRain,  10,   50));
+        WaveTimerThresholds.Add(new WaveTimerThreshold(105,  0.1f,   0,    0,  RainIntensity.NoRain, 50, 0));
+        // last ramp up
+        WaveTimerThresholds.Add(new WaveTimerThreshold(130,  0.4f,   100,  20, RainIntensity.SomeRain, 20, 0));
+        WaveTimerThresholds.Add(new WaveTimerThreshold(140,  0.5f,  200,  20, RainIntensity.SomeRain, 50, 0));
+        WaveTimerThresholds.Add(new WaveTimerThreshold(150,  0.65f, 200,  20, RainIntensity.SomeRain, 50, 0));
+        WaveTimerThresholds.Add(new WaveTimerThreshold(160,  0.8f,  200,  10, RainIntensity.NoRain, 50, 0));
+        resetTimerAt = null;
 
         // start countdown timer
         StartCoroutine("Ticker");
@@ -99,7 +106,7 @@ public class WeatherController : Singleton<WeatherController>
         {
             yield return new WaitForSeconds(1f);
             totalTime++;
-			if (totalTime > resetTimerAt) {
+            if (resetTimerAt != null && totalTime > resetTimerAt) {
 				totalTime = 0;
 			}
 
