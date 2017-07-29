@@ -10,3 +10,6 @@
 [submodule "Assets/SuperUnityBuildActions"]
 	path = Assets/SuperUnityBuildActions
 	url = https://github.com/sebnil/unity-build-actions.git
+[submodule "UnityEngine2deb"]
+	path = UnityEngine2deb
+	url = https://github.com/darealshinji/UnityEngine2deb.git
