@@ -8,10 +8,6 @@ public class HUDController : MonoBehaviour {
     public Text progressText;
     public Transform timeLeftTransform;
     public Text timeLeftText;
-    public Transform ripenFactorTransform;
-    public Text ripenFactorText;
-    public Transform wavesFactorTransform;
-    public Text wavesFactorText;
     public Text debugText;
 
     float animationRate = 1f;
@@ -26,14 +22,11 @@ public class HUDController : MonoBehaviour {
 
     // Update is called once per frame
     float newCrateDeliveredAnimationTimer = 1;
-    float ripenFactorAnimationTimer = 1;
-    float wavesFactorAnimationTimer = 1;
+    
 
     void Update () {
         progressText.text = GameController.Instance.numberOfCratesDelivered.ToString();
         timeLeftText.text = Mathf.Floor(GameController.Instance.timeLeft).ToString();
-        ripenFactorText.text = "Ripen x" + GameController.Instance.currentRipenFactor;
-        wavesFactorText.text = "Waves x" + WeatherController.Instance.currentWaveFactor * 10f;
 
         debugText.text = "\nver " + BuildConstants.version;
 
@@ -42,12 +35,6 @@ public class HUDController : MonoBehaviour {
         float scale = stepAnimationTimer(ref newCrateDeliveredAnimationTimer, 2, 1, animationRate, newCrateDelivered());
         timeLeftTransform.localScale = new Vector3(scale, scale, 1);
         progressTransform.localScale = new Vector3(scale, scale, 1);
-
-        scale = stepAnimationTimer(ref ripenFactorAnimationTimer, 2, 1, animationRate, ripenFactorChanged());
-        ripenFactorTransform.localScale = new Vector3(scale, scale, 1);
-
-        scale = stepAnimationTimer(ref wavesFactorAnimationTimer, 2, 1, animationRate, WeatherController.Instance.WavesFactorChanged());
-        wavesFactorTransform.localScale = new Vector3(scale, scale, 1);
 
         // warn the gamer that time is almost up
         if (GameController.Instance.timeLeft < 10)
@@ -63,7 +50,7 @@ public class HUDController : MonoBehaviour {
     }
 
     // helper function for scale animation
-    float stepAnimationTimer(ref float timer, float startValue, float stopValue, float animationRate, bool reset)
+    public static float stepAnimationTimer(ref float timer, float startValue, float stopValue, float animationRate, bool reset)
     {
         if (reset)
         {
@@ -93,15 +80,5 @@ public class HUDController : MonoBehaviour {
         return value;
     }
 
-    float? ripenFactor = null;
-    bool ripenFactorChanged()
-    {
-        bool value = false;
-        if (GameController.Instance.currentRipenFactor != ripenFactor && ripenFactor != null)
-        {
-            value = true;
-        }
-        ripenFactor = GameController.Instance.currentRipenFactor;
-        return value;
-    }
+
 }
