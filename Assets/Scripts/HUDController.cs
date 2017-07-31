@@ -30,10 +30,22 @@ public class HUDController : MonoBehaviour {
 
         debugText.text = "\nver " + BuildConstants.version;
 
+        float timerFocus;
+        if (GameController.Instance.timeLeft < 10)
+        {
+            // 10: 1
+            // 6: 2
+            // 2: 3
+            timerFocus = Mathf.Clamp(1f + 2f * (10f - GameController.Instance.timeLeft) / 8f, 1, 3);
+        }
+        else
+        {
+            timerFocus = 1;
+        }
 
         // animations when crates get delivered
         float scale = stepAnimationTimer(ref newCrateDeliveredAnimationTimer, 2, 1, animationRate, newCrateDelivered());
-        timeLeftTransform.localScale = new Vector3(scale, scale, 1);
+        timeLeftTransform.localScale = new Vector3(scale * timerFocus, scale * timerFocus, 1);
         progressTransform.localScale = new Vector3(scale, scale, 1);
 
         // warn the gamer that time is almost up

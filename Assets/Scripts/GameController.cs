@@ -88,13 +88,17 @@ public class GameController : Singleton<GameController> {
 	public GameObject craneObject;
 	private Crane craneScript;
 
-    // Music
+    // Music and sound
     public AudioSource musicSource;
+    AudioSource clockTick;
 
     // Use this for initialization
     void Start () {
 		craneScript = craneObject.GetComponent<Crane>();
-        musicSource = GetComponent<AudioSource>();
+
+        var audioSources = GetComponents<AudioSource>();
+        musicSource = audioSources[0];
+        clockTick = audioSources[1];
 
         // start countdown timer
         StartCoroutine("GameOverTimer");
@@ -103,6 +107,8 @@ public class GameController : Singleton<GameController> {
         StartOrStopMusic();
 
 		AudioListener.volume = 1;
+
+        
     }
 	
 	// Update is called once per frame
@@ -230,6 +236,12 @@ public class GameController : Singleton<GameController> {
 
             if (gameState == GameState.Running && timeLeft > 0) {
                 timeLeft--;
+
+                if (timeLeft < 10)
+                {
+                    clockTick.Play();
+                }
+
                 if (timeLeft < 0) {
                     timeLeft = 0;
                 }
