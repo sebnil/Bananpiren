@@ -96,6 +96,8 @@ public class WeatherController : Singleton<WeatherController>
         WaveTimerThresholds.Add(new WaveTimerThreshold(160,  0.8f,  200,  10, RainIntensity.NoRain, 50, 0));
         resetTimerAt = null;
 
+        totalTime = 0;
+
         // start countdown timer
         StartCoroutine("Ticker");
     }
