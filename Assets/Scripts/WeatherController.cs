@@ -122,7 +122,7 @@ public class WeatherController : Singleton<WeatherController>
                     break;
                 }
             }
-            Debug.Log("waveTimerIndex: " + waveTimerIndex);
+
             if (waveTimerIndex != null)
             {
                 currentWaveFactor = WaveTimerThresholds[(int)waveTimerIndex].WaveFactor;
