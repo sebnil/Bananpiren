@@ -5,6 +5,7 @@ using System.Text;
 
 public static class AppInfo
 {
-    public static bool debugRelease = false;
-    public static bool EnableRemoteLogging = true;
+    public static bool DebugRelease = true; // no ability for time to run out, show buttons to give more time etc
+    public static bool SemiDebugRelease = true; // show native logger
+    public static bool EnableRemoteLogging = true; // send log files to google spreadsheet
 }

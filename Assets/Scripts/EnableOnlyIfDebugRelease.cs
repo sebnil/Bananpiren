@@ -17,11 +17,11 @@ public class EnableOnlyIfDebugRelease : MonoBehaviour {
 
     private void hideOrShowDependingOnDebugRelease()
     {
-        if (AppInfo.debugRelease && !gameObject.activeSelf)
+        if (AppInfo.DebugRelease && !gameObject.activeSelf)
         {
             gameObject.SetActive(true);
         }
-        else if (!AppInfo.debugRelease && gameObject.activeSelf)
+        else if (!AppInfo.DebugRelease && gameObject.activeSelf)
         {
             gameObject.SetActive(false);
         }

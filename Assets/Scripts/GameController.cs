@@ -131,7 +131,7 @@ public class GameController : Singleton<GameController> {
             {
 				Debug.Log (hit.transform.gameObject.name);
 
-				if (AppInfo.debugRelease && hit.transform.gameObject.name == "DebugCrateRaycastTarget") {
+				if (AppInfo.DebugRelease && hit.transform.gameObject.name == "DebugCrateRaycastTarget") {
                     GameObject obj = Instantiate (cratePrefab, new Vector3 (hit.point.x, hit.point.y, 0), Quaternion.identity) as GameObject;
 				}
             }
@@ -258,7 +258,7 @@ public class GameController : Singleton<GameController> {
                 if (timeLeft < 0) {
                     timeLeft = 0;
                 }
-            } else if (!AppInfo.debugRelease && gameState == GameState.Running) {
+            } else if (!AppInfo.DebugRelease && gameState == GameState.Running) {
                 GameOver();
             } else {
                 // do nothing
