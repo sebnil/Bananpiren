@@ -60,6 +60,8 @@ public class Crane : MonoBehaviour {
 	}
 	
 	public void LetGoOfCrate() {
+        Debug.Log("Crane::LetGoOfCrate");
+
         PlayerHasDropedAtLeastOneCrate = true;
 
         hingejoint.connectedBody = null;

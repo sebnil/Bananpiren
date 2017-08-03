@@ -33,6 +33,8 @@ public class TutorialController : MonoBehaviour {
         {
             if (GameController.Instance.numberOfCratesDelivered > 0 && crane.PlayerHasDropedAtLeastOneCrate)
             {
+                DeliverWhereText.gameObject.SetActive(false);
+                DropCrateText.gameObject.SetActive(false);
                 // disable tutorial completly
                 this.gameObject.SetActive(false);
             }

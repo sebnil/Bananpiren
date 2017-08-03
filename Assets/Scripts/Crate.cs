@@ -107,7 +107,7 @@ Green,
 
 	private void deliverCrateToDock()
 	{
-		GameController.Instance.IncrementNumberOfCratesDelivered (crateState);
+        GameController.Instance.IncrementNumberOfCratesDelivered (crateState);
 
 		// create time bonus text
 		GameObject crateDeliveredTextInstance = Instantiate (crateDeliveredTextPrefab, transform.position, transform.rotation) as GameObject;
@@ -148,8 +148,10 @@ Green,
 			break;
 		}
 
-		// destroy this crate
-		Destroy(this.gameObject);
+        Debug.Log(string.Format("Crate::deliverCrateToDock. {0:F0}", currentTimeBonus));
+
+        // destroy this crate
+        Destroy(this.gameObject);
 	}
 
     private void FixedUpdate()
@@ -184,7 +186,7 @@ Green,
 
 	void OnJointBreak(float breakForce)
 	{
-		Debug.Log("A joint has just been broken!, force: " + breakForce);
+		Debug.Log("Crate::OnJointBreak. force: " + breakForce);
 		fixedJointCreated = false;
         fastenerPercentDone = 0f;
 		fastenerCosmetics.gameObject.SetActive (false);

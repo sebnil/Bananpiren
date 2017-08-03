@@ -55,6 +55,8 @@ public class GameController : Singleton<GameController> {
 
     public float crateDroppedTimePunishment;
 
+    public event System.Action GameOverEvent;
+
     [System.Serializable]
 	public class CrateTimers
 	{
@@ -94,6 +96,7 @@ public class GameController : Singleton<GameController> {
 
     // Use this for initialization
     void Start () {
+        Debug.Log("GameController::Start. Platform: " + Application.platform + ", version: " + Application.version);
 		craneScript = craneObject.GetComponent<Crane>();
 
         var audioSources = GetComponents<AudioSource>();
@@ -116,6 +119,7 @@ public class GameController : Singleton<GameController> {
         // menu control
         if (Input.GetKeyUp(KeyCode.Escape))
         {
+            Debug.Log("GameController::Update. Escape");
             ToggleMenu();
         }
 
@@ -135,7 +139,8 @@ public class GameController : Singleton<GameController> {
 
 		if (Input.GetKeyDown ("space")) 
 		{
-			craneScript.LetGoOfCrate ();
+            Debug.Log("GameController::Update. space");
+            craneScript.LetGoOfCrate ();
 		}
 
         // calculate crates on the boat
@@ -159,7 +164,9 @@ public class GameController : Singleton<GameController> {
     }
 
 	public void IncrementNumberOfCratesDelivered(Crate.CrateState crateState) {
-		numberOfCratesDelivered++;
+        Debug.Log("GameController::IncrementNumberOfCratesDelivered");
+
+        numberOfCratesDelivered++;
 		switch (crateState) {
 		    case Crate.CrateState.Green:
 			    timeLeft += crateTimers.timeBonusGreen;
@@ -178,7 +185,9 @@ public class GameController : Singleton<GameController> {
 	}
 
 	public void PunishForDroppedCrate() {
-		timeLeft -= crateDroppedTimePunishment;
+        Debug.Log("GameController::PunishForDroppedCrate");
+
+        timeLeft -= crateDroppedTimePunishment;
 		if (timeLeft < 0) {
 			timeLeft = 0;
 		}
@@ -186,6 +195,8 @@ public class GameController : Singleton<GameController> {
 
     public void ToggleMenu()
     {
+        Debug.Log("GameController::ToggleMenu");
+
 		if (gameState == GameState.GameOver) {
 			// pause game and show menu
 			gameOverPanel.SetActive(true);
@@ -237,6 +248,8 @@ public class GameController : Singleton<GameController> {
             if (gameState == GameState.Running && timeLeft > 0) {
                 timeLeft--;
 
+                Debug.Log(string.Format("GameController::GameOverTimer. {0:F0}, {1:F0}, {2:F0}", totalTime, timeLeft, numberOfCratesDelivered));
+
                 if (timeLeft < 10)
                 {
                     clockTick.Play();
@@ -255,8 +268,14 @@ public class GameController : Singleton<GameController> {
 
     public void GameOver()
     {
+        Debug.Log("GameController::GameOver");
+
+        // fire event
+        if (GameOverEvent != null)
+            GameOverEvent();
+
+        // gameover
         gameState = GameState.GameOver;
-        
         ToggleMenu();
     }
 
@@ -267,11 +286,13 @@ public class GameController : Singleton<GameController> {
 
     public void DebugIncreaseTime()
     {
+        Debug.Log("GameController::DebugIncreaseTime");
         timeLeft += 60;
     }
 
     public void DebugDecreaseTime()
     {
+        Debug.Log("GameController::DebugDecreaseTime");
         timeLeft -= 4;
     }
 
@@ -283,15 +304,18 @@ public class GameController : Singleton<GameController> {
         // stop music if it is either not enabled or allowed
         if (!musicEnabled || !musicAllowed)
         {
+            Debug.Log("GameController::StartOrStopMusic. Pause");
             musicSource.Pause();
         }
         // start playing music if it is not playing, it is enabled and allowed
         else if (!musicSource.isPlaying && musicEnabled && musicAllowed)
         {
+            Debug.Log("GameController::StartOrStopMusic. Play");
             musicSource.Play();
         }
         else
         {
+            Debug.Log("GameController::StartOrStopMusic. do nothing");
             // do nothing
         }
     }

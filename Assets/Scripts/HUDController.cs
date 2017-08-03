@@ -28,7 +28,7 @@ public class HUDController : MonoBehaviour {
         progressText.text = GameController.Instance.numberOfCratesDelivered.ToString();
         timeLeftText.text = Mathf.Floor(GameController.Instance.timeLeft).ToString();
 
-        debugText.text = "\nver " + BuildConstants.version;
+        debugText.text = "\nv" + Application.version;
 
         float timerFocus;
         if (GameController.Instance.timeLeft < 10)

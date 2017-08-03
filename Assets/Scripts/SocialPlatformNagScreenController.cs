@@ -3,14 +3,36 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SocialPlatformNagScreenController : MonoBehaviour
+public class SocialPlatformNagScreenController : Singleton<SocialPlatformNagScreenController>
 {
+    #region Singleton<T> boilerplate
+    protected override bool isGlobalScope
+    {
+        get
+        {
+            return false;
+        }
+    }
+    void Awake()
+    {
+        // You MUST call the base class onAwake() method
+        //	before you exit Awake().
+        onAwake();
+    }
+    void OnDestroy()
+    {
+        base.onDestroy();
+    }
+    #endregion
+
     public GameObject socialPlatformNagScreen;
     public Text headerText;
 
     bool hasTriedToAuthenticate = false;
     bool scoreHasBeenReported = false;
     bool coroutineStarted = false;
+
+    public event System.Action UserAnsweredNagScreen;
 
 
     public enum NagScreenState
@@ -21,13 +43,12 @@ public class SocialPlatformNagScreenController : MonoBehaviour
         NoNagSoDontShowModal,
         GamerDoesNotWantToDoItNow,
         ShowModalAndWaitForUserInput,
-        TryToAuthenticate,
+        UserHasGivenInput,
         WaitingForAuthenticationResult,
-        AuthenticationFailed,
     };
     public NagScreenState nagScreenStateMachine = NagScreenState.AuthenticatedSoDontShowModal;
 
-    private void Start()
+    void Start()
     {
         string service;
         if ( PlatformHelperFunctions.isiOS() )
@@ -40,50 +61,18 @@ public class SocialPlatformNagScreenController : MonoBehaviour
         }
         headerText.text = "Sharing your result is fun!\nWould you like to publish your result on " + service + "?";
 
-        StartCoroutine(TryToReportScore());
-    }
-    void Update()
-    {
+        // event listeners
+        GameController.Instance.GameOverEvent += updateStateMachine;
+        UserAnsweredNagScreen += updateStateMachine;
+
+        // run state machine once on init
         updateStateMachine();
-
-        switch (nagScreenStateMachine)
-        {
-            case NagScreenState.ShowModalAndWaitForUserInput:
-                socialPlatformNagScreen.SetActive(true);
-                break;
-            case NagScreenState.GameIsNotOverSoDontShowModal:
-            case NagScreenState.AuthenticatedSoDontShowModal:
-            case NagScreenState.NoNagSoDontShowModal:
-            case NagScreenState.GamerDoesNotWantToDoItNow:
-            default:
-                socialPlatformNagScreen.SetActive(false);
-                break;
-        }
-
-        if (!LeaderboardManager.ScoreHasBeenReported && !coroutineStarted && GameController.Instance.gameState == GameState.GameOver && GameController.Instance.numberOfCratesDelivered > 0)
-        {
-            coroutineStarted = true;
-        }
     }
 
-    IEnumerator TryToReportScore()
-    {
-        while (true)
-        {
-            if (!LeaderboardManager.ScoreHasBeenReported)
-            {
-                LeaderboardManager.ReportScore(GameController.Instance.numberOfCratesDelivered, SocialPlatformConstants.leaderBoardId);
-                yield return new WaitForSeconds(2);
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
 
     void updateStateMachine()
     {
+        // state machine transitions
         if (GameController.Instance.gameState != GameState.GameOver)
         {
             nagScreenStateMachine = NagScreenState.GameIsNotOverSoDontShowModal;
@@ -104,12 +93,6 @@ public class SocialPlatformNagScreenController : MonoBehaviour
         {
             // keep state
         }
-        else if (nagScreenStateMachine == NagScreenState.TryToAuthenticate)
-        {
-            LeaderboardManager.AuthenticateToSocialPlatform();
-            nagScreenStateMachine = NagScreenState.WaitingForAuthenticationResult;
-            hasTriedToAuthenticate = true;
-        }
         else if (nagScreenStateMachine == NagScreenState.WaitingForAuthenticationResult)
         {
             // keep state
@@ -122,22 +105,47 @@ public class SocialPlatformNagScreenController : MonoBehaviour
         {
             // keep state
         }
+
+
+        // show or hide modal depending on state machine
+        switch (nagScreenStateMachine)
+        {
+            case NagScreenState.ShowModalAndWaitForUserInput:
+                socialPlatformNagScreen.SetActive(true);
+                break;
+            case NagScreenState.GameIsNotOverSoDontShowModal:
+            case NagScreenState.AuthenticatedSoDontShowModal:
+            case NagScreenState.NoNagSoDontShowModal:
+            case NagScreenState.GamerDoesNotWantToDoItNow:
+            default:
+                socialPlatformNagScreen.SetActive(false);
+                break;
+        }
     }
 
     public void UserInputYes()
     {
         PlayerPrefs.SetInt("GamerDoesNotWantToBeNaggedAboutSocialPlatform", 0);
-        nagScreenStateMachine = NagScreenState.TryToAuthenticate;
+        nagScreenStateMachine = NagScreenState.WaitingForAuthenticationResult;
+
+        // fire event
+        if (UserAnsweredNagScreen != null) UserAnsweredNagScreen();
     }
     public void UserInputNotNow()
     {
         PlayerPrefs.SetInt("GamerDoesNotWantToBeNaggedAboutSocialPlatform", 0);
         nagScreenStateMachine = NagScreenState.GamerDoesNotWantToDoItNow;
+
+        // fire event
+        if (UserAnsweredNagScreen != null) UserAnsweredNagScreen();
     }
     public void UserInputNever()
     {
         PlayerPrefs.SetInt("GamerDoesNotWantToBeNaggedAboutSocialPlatform", 1);
         nagScreenStateMachine = NagScreenState.NoNagSoDontShowModal;
+
+        // fire event
+        if (UserAnsweredNagScreen != null) UserAnsweredNagScreen();
     }
 
 }
